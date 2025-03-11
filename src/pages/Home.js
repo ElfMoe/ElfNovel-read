@@ -1150,7 +1150,7 @@ function Home() {
             <p>故事的大门已然打开。</p>
             <p>现在，请尽情探索属于你的世界吧。</p>
             <div className="cta-buttons">
-              <Link to="/search" className="cta-btn" style={{ backgroundColor: theme.accent, color: 'white' }}>
+              <Link to="/novels" className="cta-btn" style={{ backgroundColor: theme.accent, color: 'white' }}>
                 浏览更多小说
               </Link>
               <Link to="/register" className="cta-btn-secondary" style={{ borderColor: theme.accent, color: theme.accent }}>
