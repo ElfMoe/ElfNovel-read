@@ -1,0 +1,15 @@
+.chapter-item {
+  transition: all 0.3s ease;
+}
+
+.chapter-item:hover {
+  background-color: rgba(var(--accent-color-rgb), 0.2) !important;
+  transform: translateX(10px);
+  border-color: var(--accent-color) !important;
+}
+
+.chapter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+} 

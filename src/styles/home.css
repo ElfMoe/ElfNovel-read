@@ -1,0 +1,867 @@
+/* 基础样式 */
+:root {
+  --primary-font: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  --float-animation-duration: 8s;
+  --text-appear-duration: 1s;
+  --card-angle: 12deg; /* 控制三角形悬浮效果的角度 */
+  --background-transition-speed: 1.5s; /* 背景过渡速度 */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow-x: hidden;
+  font-family: var(--primary-font);
+  line-height: 1.6;
+}
+
+/* 平滑滚动 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 容器样式 */
+.home-container {
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 添加背景呼吸动画 */
+@keyframes backgroundBreathing {
+  0% {
+    background-size: 100% auto;
+  }
+  50% {
+    background-size: 105% auto;
+  }
+  100% {
+    background-size: 100% auto;
+  }
+}
+
+/* 部分样式 */
+.section {
+  min-height: 100vh;
+  position: relative;
+  overflow: visible; /* 修改为visible消除溢出的黑边 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem 0;
+  animation: backgroundBreathing 15s ease-in-out infinite; /* 应用呼吸动画 */
+}
+
+/* 渐变遮罩层 */
+.section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1; /* 在背景之上，内容之下 */
+}
+
+/* 渐变层样式 */
+.welcome-section::before {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6)),
+              linear-gradient(to right, rgba(120,70,180,0.2), rgba(50,20,90,0.3)); /* 紫色调奇幻欢迎页 */
+}
+
+.fantasy-section::before {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6)), 
+              linear-gradient(to right, rgba(100,50,200,0.2), rgba(50,0,100,0.3)); /* 深紫色调奇幻场景 */
+}
+
+.scifi-section::before {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6)),
+              linear-gradient(to right, rgba(0,100,255,0.3), rgba(0,0,100,0.3)); /* 蓝色调科技场景 */
+}
+
+.romance-section::before {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6)),
+              linear-gradient(to right, rgba(255,150,150,0.3), rgba(200,100,150,0.3)); /* 粉色调校园场景 */
+}
+
+.end-section::before {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6)),
+              linear-gradient(to right, rgba(255,180,50,0.3), rgba(255,120,50,0.3)); /* 金色调结束场景 */
+}
+
+/* 最后一个部分的样式，移除底部空隙 */
+.end-section {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  justify-content: flex-start;
+}
+
+/* 内容块样式 */
+.content-block {
+  min-height: 80vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+  position: relative;
+  z-index: 2; /* 确保内容在渐变层上方 */
+  color: white; /* 确保文字在所有部分都是白色 */
+}
+
+/* 文本内容 */
+.text-content {
+  max-width: 800px;
+  width: 90%;
+  margin: 0 auto;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity var(--text-appear-duration) ease, transform var(--text-appear-duration) ease;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.text-content.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.text-content h2 {
+  font-size: 2.8rem;
+  margin-bottom: 1.5rem;
+  text-shadow: var(--text-shadow);
+  font-weight: 700;
+  color: white;
+}
+
+.text-content p {
+  font-size: 1.3rem;
+  line-height: 1.8;
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.03em;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* 欢迎部分 */
+.welcome-text {
+  max-width: 800px;
+  width: 90%;
+  margin: 0 auto;
+  text-align: center;
+  padding: 2rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity var(--text-appear-duration) ease, transform var(--text-appear-duration) ease;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+
+.welcome-text.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.welcome-text h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  text-shadow: var(--text-shadow);
+  font-weight: 800;
+  color: white;
+}
+
+.welcome-text p {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* 滚动指示器 */
+.scroll-indicator {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  animation: pulse 2s infinite;
+}
+
+.scroll-indicator span {
+  font-size: 1.1rem;
+  color: white;
+}
+
+.scroll-indicator i {
+  font-size: 1.5rem;
+  color: white;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* 过渡文本 */
+.transition-text {
+  text-align: center;
+  padding: 2rem;
+  font-style: italic;
+  opacity: 0.8;
+  font-size: 1.3rem;
+  max-width: 800px;
+  margin: 0 auto;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* 小说展示 */
+.novel-showcase {
+  width: 100%;
+  max-width: 650px; /* 增加最大宽度，适应更宽的小说显示区域 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity var(--text-appear-duration) ease, transform var(--text-appear-duration) ease;
+  position: relative; /* 添加相对定位 */
+  margin-bottom: 30px; /* 增加底部空间，防止卡片悬浮时与下方元素重叠 */
+}
+
+.novel-showcase.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 小说展示容器 */
+.novel-display {
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  perspective: 1200px;
+  z-index: 2;
+  position: relative;
+  padding-bottom: 40px; /* 增加底部空间，确保卡片上移后有足够空间 */
+  margin-bottom: 20px; /* 添加间距 */
+}
+
+/* 小说卡片 */
+.novel-card {
+  width: 300px;
+  height: 420px;
+  border-radius: 15px;
+  box-shadow: var(--card-shadow);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  animation: floatTriangle var(--float-animation-duration) ease-in-out infinite;
+  margin-bottom: 2rem;
+  transform-origin: center center;
+  /* 平滑过渡效果 */
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              box-shadow 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* 添加初始悬浮状态 */
+  transform: translateY(0) rotateY(calc(-1 * var(--card-angle))) rotateX(-5deg);
+  /* 添加初始状态的阴影效果 */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.novel-card:hover {
+  /* 恢复原来的旋转效果，并增加向上移动的幅度 */
+  transform: translateY(-35px) rotateY(var(--card-angle)) rotateX(5deg) scale(1.05);
+  box-shadow: 0 40px 70px rgba(0, 0, 0, 0.6);
+  z-index: 10; /* 确保悬浮卡片在最上层 */
+}
+
+/* 修改三角形悬浮动画使其更加微妙 */
+@keyframes floatTriangle {
+  0% {
+    transform: translateY(0) rotateY(calc(-1 * var(--card-angle))) rotateX(-5deg);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    transform: translateY(-15px) rotateY(calc(-0.5 * var(--card-angle))) rotateX(3deg);
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4);
+  }
+  100% {
+    transform: translateY(0) rotateY(calc(-1 * var(--card-angle))) rotateX(-5deg);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* 信息栏样式 */
+.novel-info-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 10px;
+  margin-bottom: 1rem;
+}
+
+/* 简要信息 */
+.novel-brief {
+  text-align: center;
+  padding: 0 1rem;
+  max-width: 350px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.novel-brief .novel-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  position: static;
+  background: none;
+  padding: 0;
+  white-space: normal;
+  overflow: visible;
+  word-wrap: break-word;
+  line-height: 1.3;
+}
+
+.novel-brief .novel-author {
+  font-size: 1.1rem;
+  font-weight: 500;
+  opacity: 0.8;
+  position: static;
+  background: none;
+  padding: 0;
+  white-space: normal;
+  overflow: visible;
+  word-wrap: break-word;
+}
+
+/* 控制按钮 */
+.control-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+  backdrop-filter: blur(5px);
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.control-btn:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.1) translateZ(10px) rotate(5deg);
+}
+
+.control-btn:first-child:hover {
+  transform: scale(1.1) translateZ(10px) rotate(-5deg);
+}
+
+/* 阅读按钮 */
+.read-btn {
+  padding: 0.8rem 2rem;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+.read-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* 小说描述 */
+.novel-description {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  padding: 1.5rem;
+  backdrop-filter: blur(5px);
+  animation: fadeInUp 0.5s ease;
+  margin-top: 1rem; /* 增加上边距，为卡片上移留出空间 */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  max-width: 450px;
+  width: 100%;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.novel-description p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.novel-description .read-btn {
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+/* 卡片动画 */
+.novel-card.exit-left {
+  transform: translateX(-100px) rotateY(-30deg) scale(0.8);
+  opacity: 0;
+}
+
+.novel-card.exit-right {
+  transform: translateX(100px) rotateY(30deg) scale(0.8);
+  opacity: 0;
+}
+
+.novel-card.enter-left {
+  transform: translateX(0) rotateY(0) scale(1);
+  opacity: 1;
+}
+
+.novel-card.enter-right {
+  transform: translateX(0) rotateY(0) scale(1);
+  opacity: 1;
+}
+
+/* 结束内容 */
+.end-content {
+  max-width: 800px;
+  width: 90%;
+  margin: 0 auto;
+  text-align: center;
+  padding: 2rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity var(--text-appear-duration) ease, transform var(--text-appear-duration) ease;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  z-index: 2;
+  padding-bottom: 4rem; /* 增加底部内容的填充 */
+}
+
+.end-content.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.end-content h2 {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  text-shadow: var(--text-shadow);
+  color: white;
+}
+
+.end-content p {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* CTA按钮 */
+.cta-buttons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.cta-btn, .cta-btn-secondary {
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.cta-btn {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.cta-btn-secondary {
+  background-color: transparent;
+  border: 2px solid;
+}
+
+.cta-btn:hover, .cta-btn-secondary:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* 更新卡片点击提示样式 */
+.card-click-hint {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 20px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  backdrop-filter: blur(3px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(255, 255, 255, 0.1);
+  z-index: 5;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  animation: subtle-glow 3s infinite alternate;
+  max-width: 80%;
+  font-weight: 500;
+  text-align: center;
+  pointer-events: none;
+}
+
+.novel-card:hover .card-click-hint {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* 添加微光效果 */
+@keyframes subtle-glow {
+  from {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 5px rgba(255, 255, 255, 0.1);
+  }
+  to {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(255, 255, 255, 0.2);
+  }
+}
+
+.card-click-hint i {
+  font-size: 1rem;
+  /* 添加脉冲动画 */
+  animation: icon-pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes icon-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.novel-card.expanded .card-click-hint {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .welcome-text h1 {
+    font-size: 2.5rem;
+  }
+  
+  .text-content h2 {
+    font-size: 2.2rem;
+  }
+  
+  .welcome-text p, .text-content p {
+    font-size: 1.1rem;
+  }
+  
+  .novel-card {
+    width: 260px;
+    height: 360px;
+  }
+
+  .end-content h2 {
+    font-size: 2.5rem;
+  }
+  
+  .cta-btn, .cta-btn-secondary {
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1rem;
+  }
+  
+  .content-block {
+    min-height: 70vh;
+  }
+  
+  .novel-brief .novel-title {
+    font-size: 1.3rem;
+  }
+  
+  .novel-brief .novel-author {
+    font-size: 1rem;
+  }
+  
+  .novel-description p {
+    font-size: 1rem;
+  }
+  
+  .control-btn {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .card-click-hint {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    bottom: 10px;
+    right: 10px;
+  }
+  
+  .card-click-hint i {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-text h1 {
+    font-size: 2rem;
+  }
+  
+  .text-content h2 {
+    font-size: 1.8rem;
+  }
+  
+  .welcome-text p, .text-content p {
+    font-size: 1rem;
+  }
+  
+  .novel-card {
+    width: 220px;
+    height: 320px;
+  }
+  
+  .novel-brief .novel-title {
+    font-size: 1.1rem;
+  }
+  
+  .novel-brief .novel-author {
+    font-size: 0.9rem;
+  }
+  
+  .novel-description p {
+    font-size: 0.9rem;
+  }
+  
+  .control-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+  
+  .novel-info-bar {
+    padding: 0 5px;
+  }
+  
+  .end-content h2 {
+    font-size: 2rem;
+  }
+  
+  .cta-buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .content-block {
+    min-height: 60vh;
+  }
+  
+  .card-click-hint {
+    padding: 5px 8px;
+    font-size: 0.75rem;
+    bottom: 8px;
+    right: 8px;
+  }
+  
+  .card-click-hint i {
+    font-size: 0.8rem;
+  }
+}
+
+/* 卡片切换动画 */
+.sliding-left {
+  animation: slideLeft 0.3s ease-in-out;
+}
+
+.sliding-right {
+  animation: slideRight 0.3s ease-in-out;
+}
+
+@keyframes slideLeft {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+}
+
+@keyframes slideRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+}
+
+/* 加载占位符样式 */
+.novel-card-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* 加载动画 */
+@keyframes spinner {
+  to {transform: rotate(360deg);}
+}
+
+.loading-spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spinner 0.8s linear infinite;
+}
+
+/* 添加类别提示样式 */
+.category-hint {
+  text-align: center;
+  font-size: 1.2rem;
+  color: white;
+  margin-top: 1.5rem; /* 改为上边距，因为现在在卡片下方 */
+  font-weight: 500;
+  font-style: italic;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  opacity: 0;
+  transform: translateY(0); /* 初始位置不再下移 */
+  animation: fadeInWithDelay 1s forwards;
+  animation-delay: 0.5s;
+  position: relative;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  max-width: 90%;
+  z-index: 1; /* 确保不会遮挡卡片 */
+}
+
+@keyframes fadeInWithDelay {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 当小说卡片悬停时，提示文字弹起效果 */
+.novel-display:hover + .category-hint {
+  transform: translateY(-15px) scale(1.1);
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+  color: #fff;
+}
+
+/* 各场景提示文字的悬停效果个性化 */
+.fantasy-section .novel-display:hover + .category-hint {
+  color: #f8e9ff; /* 浅紫色 */
+  box-shadow: 0 0 15px rgba(180, 100, 255, 0.2);
+}
+
+.scifi-section .novel-display:hover + .category-hint {
+  color: #d1f8ff; /* 浅蓝色 */
+  box-shadow: 0 0 15px rgba(80, 200, 255, 0.2);
+}
+
+.romance-section .novel-display:hover + .category-hint {
+  color: #ffedf2; /* 浅粉色 */
+  box-shadow: 0 0 15px rgba(255, 120, 150, 0.2);
+}
+
+/* 调整卡片与提示的关系 */
+.novel-showcase .category-hint {
+  order: -1; /* 确保提示文字在卡片之前渲染 */
+}
+
+/* 当小说卡片被悬停时，让相关的类别提示弹起 */
+.novel-card:hover ~ .category-hint,
+.novel-showcase:hover .category-hint {
+  transform: translateY(-15px) scale(1.05);
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* 各场景的类别提示个性化基础样式 */
+.fantasy-section .category-hint {
+  font-family: 'Times New Roman', serif;
+  letter-spacing: 1px;
+}
+
+.scifi-section .category-hint {
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.5px;
+}
+
+.romance-section .category-hint {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  letter-spacing: 0.8px;
+} 
