@@ -1,70 +1,129 @@
-# Getting Started with Create React App
+# Novel Reading Platform - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
+This is the frontend part of a novel reading platform, a personal side project aimed at creating a space where anyone can easily share their stories and novels. The goal is to encourage more people to become authors while providing readers with an enjoyable reading experience.
 
-## Available Scripts
+The platform features a modern, responsive UI built with React, allowing users to read, write, and manage novels across different devices. It includes comprehensive author tools, reader features, and community interaction functions.
 
-In the project directory, you can run:
+## Features
+- **Dynamic Homepage**: Immersive UI design with featured novels and categories
+- **User Authentication**: Complete login, registration, and profile management
+- **Author Dashboard**: Tools for creating and managing novels and chapters
+- **Reader Experience**: Customizable reading settings and history tracking
+- **Community Interaction**: Comments and rating system
+- **Responsive Design**: Works on desktop, tablet, and mobile devices
+- **Theme Support**: Light and dark mode options
 
-### `npm start`
+## Technology Stack
+- **React**: Core framework for building the user interface
+- **React Router**: For navigation and routing
+- **React Context API**: For state management (themes, user authentication)
+- **Bootstrap 5**: For responsive design components
+- **CSS/CSS-in-JS**: For custom styling and theming
+- **Axios**: For API communication with the backend
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Installation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Clone the repository
+```bash
+git clone https://github.com/your-username/novel-reading-frontend.git
+cd novel-reading-frontend
+```
 
-### `npm test`
+2. Install dependencies
+```bash
+npm install
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3. Start the development server
+```bash
+npm start
+```
 
-### `npm run build`
+4. Build for production
+```bash
+npm run build
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Project Structure
+```
+src/
+├── assets/         # Images and static resources
+├── components/     # Reusable UI components
+├── contexts/       # React Context providers
+├── pages/          # Page components
+│   ├── author/     # Author-specific pages
+│   └── reader/     # Reader-specific pages
+├── services/       # API services and utilities
+├── styles/         # Global styles and CSS files
+└── utils/          # Utility functions
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Connect with Backend
+The frontend is designed to work with the accompanying backend API. By default, it's configured to connect to `http://localhost:5000`. You can modify this in `src/services/api.js`.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+# 小说阅读平台 - 前端
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 概述
+这是小说阅读平台的前端部分，是一个个人项目，旨在创建一个空间，让任何人都能轻松分享自己的故事和小说。该项目的目标是鼓励更多人成为作者，同时为读者提供愉悦的阅读体验。
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+该平台具有使用React构建的现代化响应式UI，允许用户在不同设备上阅读、创作和管理小说。它包括全面的作者工具、读者功能和社区互动功能。
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 特点
+- **动态首页**：沉浸式UI设计，展示精选小说和分类
+- **用户认证**：完整的登录、注册和个人资料管理
+- **作者仪表盘**：创建和管理小说与章节的工具
+- **阅读体验**：可定制的阅读设置和历史记录跟踪
+- **社区互动**：评论和评分系统
+- **响应式设计**：适用于桌面、平板和移动设备
+- **主题支持**：明亮和暗黑模式选项
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 技术栈
+- **React**：构建用户界面的核心框架
+- **React Router**：用于导航和路由
+- **React Context API**：用于状态管理（主题、用户认证）
+- **Bootstrap 5**：用于响应式设计组件
+- **CSS/CSS-in-JS**：用于自定义样式和主题
+- **Axios**：用于与后端API通信
 
-## Learn More
+## 安装
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. 克隆仓库
+```bash
+git clone https://github.com/your-username/novel-reading-frontend.git
+cd novel-reading-frontend
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. 安装依赖
+```bash
+npm install
+```
 
-### Code Splitting
+3. 启动开发服务器
+```bash
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+4. 构建生产版本
+```bash
+npm run build
+```
 
-### Analyzing the Bundle Size
+## 项目结构
+```
+src/
+├── assets/         # 图片和静态资源
+├── components/     # 可复用UI组件
+├── contexts/       # React Context提供者
+├── pages/          # 页面组件
+│   ├── author/     # 作者相关页面
+│   └── reader/     # 读者相关页面
+├── services/       # API服务和工具
+├── styles/         # 全局样式和CSS文件
+└── utils/          # 实用工具函数
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 连接后端
+前端设计为与配套的后端API一起工作。默认情况下，它配置为连接到`http://localhost:5000`。您可以在`src/services/api.js`中修改此设置。
