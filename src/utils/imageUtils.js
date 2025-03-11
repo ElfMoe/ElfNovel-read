@@ -8,11 +8,20 @@
 export const getFullImageUrl = (url, defaultImage = '/images/default-cover.jpg', options = {}) => {
   console.log('getFullImageUrl 输入URL:', url);
   
+  // 获取API基础URL
+  const baseUrl = process.env.REACT_APP_API_URL?.replace('/api', '') || 'https://novel-reading-website-backend.onrender.com';
+  
   // 如果URL是空或undefined，直接返回默认图片的绝对路径
   if (!url) {
-    const defaultUrl = `${window.location.origin}${defaultImage}`;
+    const defaultUrl = `${baseUrl}${defaultImage}`;
     console.log('URL为空，使用默认图片:', defaultUrl);
     return defaultUrl;
+  }
+  
+  // 如果已经是Cloudinary的URL，直接返回
+  if (url.includes('cloudinary.com')) {
+    console.log('是Cloudinary URL，直接返回:', url);
+    return url;
   }
   
   // 如果已经是完整URL，直接返回
@@ -21,16 +30,15 @@ export const getFullImageUrl = (url, defaultImage = '/images/default-cover.jpg',
     return url;
   }
   
-  // 如果是默认图片路径，返回带有origin的绝对路径
+  // 如果是默认图片路径，返回带有baseUrl的绝对路径
   if (url === defaultImage) {
-    const fullDefaultUrl = `${window.location.origin}${defaultImage}`;
-    console.log('是默认图片路径，添加origin:', fullDefaultUrl);
+    const fullDefaultUrl = `${baseUrl}${defaultImage}`;
+    console.log('是默认图片路径，添加baseUrl:', fullDefaultUrl);
     return fullDefaultUrl;
   }
   
   // 如果是模板封面并且有额外参数
   if (url.includes('/templates/cover-template-') && (options.title || options.author)) {
-    const baseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001';
     let fullUrl = `${baseUrl}${url}`;
     
     // 添加查询参数
@@ -50,9 +58,6 @@ export const getFullImageUrl = (url, defaultImage = '/images/default-cover.jpg',
   }
   
   // 如果是相对路径，添加API基础URL
-  const baseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001';
-  
-  // 确保路径正确拼接
   let finalUrl;
   if (url.startsWith('/')) {
     finalUrl = `${baseUrl}${url}`;
@@ -150,4 +155,48 @@ export const generateTextAvatar = (username, backgroundColor = '#000000', textCo
   const dataUrl = canvas.toDataURL('image/png');
   
   return dataUrl;
+};
+
+// 获取API基础URL
+const getApiBaseUrl = () => {
+    return process.env.REACT_APP_API_URL?.replace('/api', '') || 'https://novel-reading-website-backend.onrender.com';
+};
+
+// 转换图片URL
+export const convertImageUrl = (url) => {
+    if (!url) return '';
+    
+    // 如果已经是完整的URL，直接返回
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+        return url;
+    }
+    
+    // 如果是相对路径，添加API基础URL
+    if (url.startsWith('/')) {
+        return `${getApiBaseUrl()}${url}`;
+    }
+    
+    // 如果没有前导斜杠，添加斜杠
+    return `${getApiBaseUrl()}/${url}`;
+};
+
+// 验证图片URL是否可访问
+export const validateImageUrl = async (url) => {
+    try {
+        const response = await fetch(url, { method: 'HEAD' });
+        return response.ok;
+    } catch (error) {
+        console.error('验证图片URL时出错:', url, error);
+        return false;
+    }
+};
+
+// 获取默认封面
+export const getDefaultCover = () => {
+    return `${getApiBaseUrl()}/images/default-cover.jpg`;
+};
+
+// 处理图片加载错误
+export const handleImageError = (event) => {
+    event.target.src = getDefaultCover();
 }; 

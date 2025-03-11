@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "小说阅读",
+  "name": "小说阅读网站",
   "icons": [
     {
       "src": "favicon.ico",

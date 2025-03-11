@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://novel-reading-website-backend.onrender.com/api';
+
+console.log('API Base URL:', API_BASE_URL);
+console.log('Environment:', process.env.NODE_ENV);
 
 // 创建axios实例 - 不带凭据的常规请求
 const api = axios.create({
@@ -8,7 +11,8 @@ const api = axios.create({
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json'
-    }
+    },
+    withCredentials: true  // 添加这行以支持跨域认证
 });
 
 // 创建带凭据的axios实例 - 用于需要发送cookie的请求
@@ -18,7 +22,7 @@ const apiWithCredentials = axios.create({
     headers: {
         'Content-Type': 'application/json'
     },
-    withCredentials: true // 启用跨域请求时发送Cookie
+    withCredentials: true
 });
 
 // 请求拦截器
