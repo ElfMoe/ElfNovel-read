@@ -7,6 +7,10 @@
   --text-appear-duration: 1s;
   --card-angle: 12deg; /* 控制三角形悬浮效果的角度 */
   --background-transition-speed: 1.5s; /* 背景过渡速度 */
+  
+  /* 默认背景图片变量 */
+  --section-bg-image: none;
+  --section-opacity: 1;
 }
 
 * {
@@ -873,13 +877,85 @@ html {
     /* 使用GPU加速提高iOS设备上的滚动性能 */
     -webkit-transform: translateZ(0);
     -webkit-backface-visibility: hidden;
+    
+    /* 添加固定位置和大小控制 */
+    position: relative;
+    overflow: hidden;
+    /* 禁用默认背景 */
+    background-image: none !important;
+  }
+  
+  /* 为每个部分添加伪元素来处理背景图片 */
+  .section::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background-image: var(--section-bg-image);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    will-change: transform;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    opacity: var(--section-opacity, 1);
+  }
+  
+  /* 内容层级提高，确保在背景之上 */
+  .content-block {
+    z-index: 3;
+    position: relative;
+  }
+  
+  /* 确保渐变层在内容下方、背景上方 */
+  .section::before {
+    z-index: 1;
+  }
+  
+  /* 加强渐变效果，确保文字可读性 */
+  .welcome-section::before,
+  .fantasy-section::before,
+  .scifi-section::before,
+  .romance-section::before,
+  .end-section::before {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.7)),
+                linear-gradient(to right, rgba(0,0,0,0.4), rgba(0,0,0,0.4));
   }
 }
 
 /* 针对iPad的特殊处理 */
-@media (min-width: 768px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape) {
+@media (min-width: 768px) and (-webkit-device-pixel-ratio: 2) {
   .section {
     background-size: cover !important;
     background-position: center center !important;
+  }
+  
+  /* 横屏iPad的特定样式 */
+  @media (orientation: landscape) {
+    .section {
+      /* 控制背景图片缩放 */
+      background-size: contain !important;
+      background-position: center center !important;
+    }
+    
+    /* 使用背景比例约束，防止图片过大 */
+    @supports (-webkit-touch-callout: none) {
+      .section::after {
+        background-size: 100% auto !important;
+        background-position: center center !important;
+        /* 确保背景图片完全覆盖 */
+        object-fit: cover;
+        transform: scale(1.2);
+      }
+    }
+    
+    /* 调整小说卡片大小，避免在iPad横屏模式下过大 */
+    .novel-card {
+      width: 280px;
+      height: 400px;
+    }
   }
 } 
