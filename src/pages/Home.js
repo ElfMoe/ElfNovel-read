@@ -297,65 +297,6 @@ function Home() {
         element.classList.add('in-view');
       }
     });
-    
-    // 处理iOS设备上的背景切换
-    // 检测是否为iOS设备
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    if (isIOS) {
-      // 获取所有section元素
-      const sections = document.querySelectorAll('.section');
-      
-      // 为每个section计算可见度
-      sections.forEach((section, index) => {
-        const rect = section.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        
-        // 计算section在视口中的可见百分比
-        const visibleTop = Math.max(0, rect.top);
-        const visibleBottom = Math.min(viewportHeight, rect.bottom);
-        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-        const percentVisible = visibleHeight / viewportHeight;
-        
-        // 设置不透明度CSS变量
-        section.style.setProperty('--section-opacity', Math.max(0, Math.min(1, percentVisible * 1.5)));
-        
-        // 设置背景图片CSS变量
-        let bgImage;
-        if (section.classList.contains('welcome-section')) {
-          bgImage = window.innerWidth < 768 ? welcomeBgMobile : welcomeBg;
-        } else if (section.classList.contains('fantasy-section')) {
-          bgImage = window.innerWidth < 768 ? fantasyBgMobile : fantasyBg;
-        } else if (section.classList.contains('scifi-section')) {
-          bgImage = window.innerWidth < 768 ? scifiBgMobile : scifiBg;
-        } else if (section.classList.contains('romance-section')) {
-          bgImage = window.innerWidth < 768 ? romanceBgMobile : romanceBg;
-        } else if (section.classList.contains('end-section')) {
-          bgImage = window.innerWidth < 768 ? endBgMobile : endBg;
-        }
-        
-        // 适用于iPad横屏模式的特别处理
-        const isIPad = /iPad/.test(navigator.userAgent) || 
-                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 && !window.MSStream);
-        const isLandscape = window.innerWidth > window.innerHeight;
-        
-        if (isIPad && isLandscape) {
-          // iPad横屏模式使用移动版图片，但控制缩放比例
-          if (section.classList.contains('welcome-section')) {
-            bgImage = welcomeBgMobile;
-          } else if (section.classList.contains('fantasy-section')) {
-            bgImage = fantasyBgMobile;
-          } else if (section.classList.contains('scifi-section')) {
-            bgImage = scifiBgMobile;
-          } else if (section.classList.contains('romance-section')) {
-            bgImage = romanceBgMobile;
-          } else if (section.classList.contains('end-section')) {
-            bgImage = endBgMobile;
-          }
-        }
-        
-        section.style.setProperty('--section-bg-image', `url(${bgImage})`);
-      });
-    }
   };
   
   // 添加窗口大小变化监听，确保在调整窗口大小时重新渲染以切换合适的背景图片
@@ -390,76 +331,10 @@ function Home() {
   
   // 滚动监听
   useEffect(() => {
-    // 初始化函数，确保页面加载时CSS变量已设置
-    const initBackgrounds = () => {
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-      if (isIOS) {
-        const sections = document.querySelectorAll('.section');
-        sections.forEach((section) => {
-          let bgImage;
-          if (section.classList.contains('welcome-section')) {
-            bgImage = window.innerWidth < 768 ? welcomeBgMobile : welcomeBg;
-          } else if (section.classList.contains('fantasy-section')) {
-            bgImage = window.innerWidth < 768 ? fantasyBgMobile : fantasyBg;
-          } else if (section.classList.contains('scifi-section')) {
-            bgImage = window.innerWidth < 768 ? scifiBgMobile : scifiBg;
-          } else if (section.classList.contains('romance-section')) {
-            bgImage = window.innerWidth < 768 ? romanceBgMobile : romanceBg;
-          } else if (section.classList.contains('end-section')) {
-            bgImage = window.innerWidth < 768 ? endBgMobile : endBg;
-          }
-          
-          // iPad横屏模式特殊处理
-          const isIPad = /iPad/.test(navigator.userAgent) || 
-                       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 && !window.MSStream);
-          const isLandscape = window.innerWidth > window.innerHeight;
-          
-          if (isIPad && isLandscape) {
-            if (section.classList.contains('welcome-section')) {
-              bgImage = welcomeBgMobile;
-            } else if (section.classList.contains('fantasy-section')) {
-              bgImage = fantasyBgMobile;
-            } else if (section.classList.contains('scifi-section')) {
-              bgImage = scifiBgMobile;
-            } else if (section.classList.contains('romance-section')) {
-              bgImage = romanceBgMobile;
-            } else if (section.classList.contains('end-section')) {
-              bgImage = endBgMobile;
-            }
-          }
-          
-          section.style.setProperty('--section-bg-image', `url(${bgImage})`);
-        });
-      }
-    };
-    
-    // 初始化背景
-    initBackgrounds();
-    
-    // 监听方向变化
-    const handleOrientationChange = () => {
-      console.log('方向变化检测');
-      // 强制重新渲染组件
-      setForceUpdate(prev => !prev);
-      // 重置图片加载状态
-      setFantasyImgLoaded(false);
-      setScifiImgLoaded(false);
-      setRomanceImgLoaded(false);
-      // 重新初始化背景
-      initBackgrounds();
-    };
-    
-    window.addEventListener('orientationchange', handleOrientationChange);
-    window.addEventListener('resize', handleOrientationChange);
-    
-    // 处理滚动事件
     window.addEventListener('scroll', handleScroll);
-    // 初始检查
-    handleScroll();
+    handleScroll(); // 初始检查
     
     return () => {
-      window.removeEventListener('orientationchange', handleOrientationChange);
-      window.removeEventListener('resize', handleOrientationChange);
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
@@ -495,12 +370,23 @@ function Home() {
       console.log('使用桌面版图片');
     }
     
-    // 如果是iOS设备，我们使用CSS变量控制背景，返回空对象
+    // 为iOS设备添加特殊处理
     if (isIOS) {
-      return {};
+      return {
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: position,
+        backgroundAttachment: 'scroll', // iOS上使用scroll而不是fixed
+        backgroundRepeat: 'no-repeat',
+        transition: 'background-position 0.5s ease-out',
+        willChange: 'background-position', // 提高性能
+        transform: 'translateZ(0)', // 强制硬件加速
+        WebkitBackfaceVisibility: 'hidden', // iOS Safari优化
+        WebkitPerspective: 1000,
+        WebkitTransform: 'translate3d(0,0,0)', // iOS Safari优化
+      };
     }
     
-    // 为非iOS设备返回标准背景样式
     return {
       backgroundImage: `url(${backgroundImage})`,
       backgroundSize: 'cover',
