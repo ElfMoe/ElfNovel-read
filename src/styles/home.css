@@ -888,19 +888,19 @@ html {
     background-size: cover !important;
   }
   
-  /* iPad横屏模式特殊处理 - 使用桌面版样式 */
+  /* iPad横屏模式特殊处理 - 使用伪元素实现固定背景 */
   @media (min-width: 768px) and (orientation: landscape) {
     /* 检测是否为iPad的特定媒体查询 */
     @supports (padding-top: env(safe-area-inset-top)) or (-webkit-overflow-scrolling: touch) {
-      /* iPad横屏模式恢复桌面版动画效果 */
+      /* 基本section设置 - 移除背景图片 */
       .section {
-        background-attachment: fixed !important;
-        animation: backgroundBreathing 15s ease-in-out infinite !important;
-        transform: none !important;
-        -webkit-transform: none !important;
+        background-image: none !important; /* 移除背景图片，改用伪元素实现 */
+        position: relative !important;
+        overflow: hidden !important;
+        animation: none !important; /* 禁用动画 */
       }
       
-      /* 确保滤镜效果在iPad横屏模式下正常显示 */
+      /* 使用伪元素:before作为滤镜层 */
       .section::before {
         content: '' !important;
         position: absolute !important;
@@ -908,10 +908,53 @@ html {
         left: 0 !important;
         right: 0 !important;
         bottom: 0 !important;
-        z-index: 1 !important;
+        z-index: 1 !important; /* 在背景图之上，内容之下 */
       }
       
-      /* 恢复各区域的滤镜效果 */
+      /* 使用伪元素:after作为固定背景图 */
+      .section::after {
+        content: '' !important;
+        position: fixed !important; /* 关键：使用fixed定位 */
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background-size: cover !important;
+        background-position: center center !important;
+        background-repeat: no-repeat !important;
+        z-index: 0 !important; /* 在最底层 */
+        transform: translateZ(0) !important; /* 启用硬件加速 */
+        transition: opacity 0.5s ease !important; /* 平滑过渡 */
+        opacity: 0 !important; /* 初始隐藏 */
+      }
+
+      /* 当section进入视口时显示其背景 */
+      .section.in-viewport::after {
+        opacity: 1 !important;
+      }
+      
+      /* 为每个section设置特定背景图和滤镜 */
+      .welcome-section::after {
+        background-image: var(--welcome-bg-image) !important;
+      }
+      
+      .fantasy-section::after {
+        background-image: var(--fantasy-bg-image) !important;
+      }
+      
+      .scifi-section::after {
+        background-image: var(--scifi-bg-image) !important;
+      }
+      
+      .romance-section::after {
+        background-image: var(--romance-bg-image) !important;
+      }
+      
+      .end-section::after {
+        background-image: var(--end-bg-image) !important;
+      }
+      
+      /* 滤镜层样式 */
       .welcome-section::before {
         background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6)),
                     linear-gradient(to right, rgba(120,70,180,0.2), rgba(50,20,90,0.3)) !important;
