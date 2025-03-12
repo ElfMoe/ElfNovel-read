@@ -65,19 +65,7 @@ export const getFullImageUrl = (url, defaultImage = '/images/default-cover.jpg',
     finalUrl = `${baseUrl}/${url}`;
   }
   
-  // 尝试一个替代方法 - 使用fetch验证图片是否可访问
-  fetch(finalUrl, { method: 'HEAD' })
-    .then(response => {
-      if (response.ok) {
-        console.log('图片URL可访问:', finalUrl);
-      } else {
-        console.warn('图片URL可能不可访问:', finalUrl, response.status);
-      }
-    })
-    .catch(error => {
-      console.error('验证图片URL时出错:', finalUrl, error);
-    });
-  
+  // 不再使用fetch验证图片，因为这在iOS上可能会有问题
   console.log('生成的完整URL:', finalUrl);
   return finalUrl;
 };
@@ -198,5 +186,25 @@ export const getDefaultCover = () => {
 
 // 处理图片加载错误
 export const handleImageError = (event) => {
-    event.target.src = getDefaultCover();
+    console.log('图片加载失败，使用默认图片:', event.target.src);
+    // 检查是否是iOS设备
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    
+    if (isIOS) {
+        console.log('检测到iOS设备，使用特殊处理');
+        // 在iOS上，尝试使用不同的缓存策略
+        const timestamp = new Date().getTime();
+        const originalSrc = event.target.src.split('?')[0]; // 移除可能存在的查询参数
+        event.target.src = `${originalSrc}?t=${timestamp}`;
+        
+        // 如果再次失败，使用默认图片
+        event.target.onerror = () => {
+            console.log('iOS设备上二次加载失败，使用默认图片');
+            event.target.src = getDefaultCover();
+            event.target.onerror = null; // 防止无限循环
+        };
+    } else {
+        // 非iOS设备直接使用默认图片
+        event.target.src = getDefaultCover();
+    }
 }; 

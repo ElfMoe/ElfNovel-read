@@ -328,6 +328,9 @@ function Home() {
     // 检测是否为移动设备（屏幕宽度小于768px）
     const isMobile = window.innerWidth < 768;
     
+    // 检测是否为iOS设备
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    
     // 使用forceUpdate状态确保在窗口大小变化时重新计算
     // eslint-disable-next-line no-unused-vars
     const _ = forceUpdate;
@@ -344,12 +347,30 @@ function Home() {
       else if (imagePath === endBg) backgroundImage = endBgMobile;
     }
     
+    // 为iOS设备添加特殊处理
+    if (isIOS) {
+      return {
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: position,
+        backgroundAttachment: 'scroll', // iOS上使用scroll而不是fixed
+        backgroundRepeat: 'no-repeat',
+        transition: 'background-position 0.5s ease-out',
+        willChange: 'background-position', // 提高性能
+        transform: 'translateZ(0)', // 强制硬件加速
+        WebkitBackfaceVisibility: 'hidden', // iOS Safari优化
+        WebkitPerspective: 1000,
+        WebkitTransform: 'translate3d(0,0,0)', // iOS Safari优化
+      };
+    }
+    
     return {
       backgroundImage: `url(${backgroundImage})`,
       backgroundSize: 'cover',
       backgroundPosition: position,
-      backgroundRepeat: 'no-repeat',
       backgroundAttachment: 'fixed',
+      backgroundRepeat: 'no-repeat',
+      transition: 'background-position 0.5s ease-out'
     };
   };
   
@@ -712,20 +733,41 @@ function Home() {
                       console.log('奇幻小说封面加载失败，详细路径:', e.target.src);
                       console.log('当前奇幻小说数据:', fantasyNovels[activeFantasyIndex]);
                       
-                      // 直接使用绝对路径尝试一次
-                      const directUrl = `http://localhost:5001${fantasyNovels[activeFantasyIndex].coverImage}`;
-                      console.log('尝试直接使用绝对路径:', directUrl);
-                      e.target.src = directUrl;
+                      // 检查是否是iOS设备
+                      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
                       
-                      e.target.onerror = () => {
-                        console.log('直接路径也加载失败，尝试使用备选图片');
-                        e.target.src = getFullImageUrl('/uploads/default-cover.jpg');
+                      if (isIOS) {
+                        console.log('检测到iOS设备，使用特殊处理');
+                        // 在iOS上，尝试使用不同的缓存策略
+                        const timestamp = new Date().getTime();
+                        const originalSrc = e.target.src.split('?')[0]; // 移除可能存在的查询参数
+                        e.target.src = `${originalSrc}?t=${timestamp}`;
+                        
+                        // 如果再次失败，使用默认图片
                         e.target.onerror = () => {
-                          console.log('备选封面也加载失败，设为已加载状态');
+                          console.log('iOS设备上二次加载失败，使用默认图片');
+                          e.target.src = getFullImageUrl('/uploads/default-cover.jpg');
+                          e.target.onerror = null; // 防止无限循环
                           setFantasyImgLoaded(true);
-                          e.target.style.display = 'none';
                         };
-                      };
+                      } else {
+                        // 非iOS设备使用原来的逻辑
+                        // 直接使用绝对路径尝试一次
+                        const baseUrl = process.env.REACT_APP_API_URL?.replace('/api', '') || 'https://novel-reading-website-backend.onrender.com';
+                        const directUrl = `${baseUrl}${fantasyNovels[activeFantasyIndex].coverImage}`;
+                        console.log('尝试直接使用绝对路径:', directUrl);
+                        e.target.src = directUrl;
+                        
+                        e.target.onerror = () => {
+                          console.log('直接路径也加载失败，尝试使用备选图片');
+                          e.target.src = getFullImageUrl('/uploads/default-cover.jpg');
+                          e.target.onerror = () => {
+                            console.log('备选封面也加载失败，设为已加载状态');
+                            setFantasyImgLoaded(true);
+                            e.target.style.display = 'none';
+                          };
+                        };
+                      }
                     }}
                   />
                 ) : (
@@ -889,13 +931,42 @@ function Home() {
                     onError={(e) => {
                       console.log('科幻小说封面加载失败，详细路径:', e.target.src);
                       console.log('当前科幻小说数据:', scifiNovels[activeScifiIndex]);
-                      // 尝试使用备选图片
-                      e.target.src = getFullImageUrl('/uploads/default-cover.jpg');
-                      e.target.onerror = () => {
-                        console.log('备选封面也加载失败，设为已加载状态');
-                        setScifiImgLoaded(true);
-                        e.target.style.display = 'none';
-                      };
+                      
+                      // 检查是否是iOS设备
+                      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                      
+                      if (isIOS) {
+                        console.log('检测到iOS设备，使用特殊处理');
+                        // 在iOS上，尝试使用不同的缓存策略
+                        const timestamp = new Date().getTime();
+                        const originalSrc = e.target.src.split('?')[0]; // 移除可能存在的查询参数
+                        e.target.src = `${originalSrc}?t=${timestamp}`;
+                        
+                        // 如果再次失败，使用默认图片
+                        e.target.onerror = () => {
+                          console.log('iOS设备上二次加载失败，使用默认图片');
+                          e.target.src = getFullImageUrl('/uploads/default-cover.jpg');
+                          e.target.onerror = null; // 防止无限循环
+                          setScifiImgLoaded(true);
+                        };
+                      } else {
+                        // 非iOS设备使用原来的逻辑
+                        // 直接使用绝对路径尝试一次
+                        const baseUrl = process.env.REACT_APP_API_URL?.replace('/api', '') || 'https://novel-reading-website-backend.onrender.com';
+                        const directUrl = `${baseUrl}${scifiNovels[activeScifiIndex].coverImage}`;
+                        console.log('尝试直接使用绝对路径:', directUrl);
+                        e.target.src = directUrl;
+                        
+                        e.target.onerror = () => {
+                          console.log('直接路径也加载失败，尝试使用备选图片');
+                          e.target.src = getFullImageUrl('/uploads/default-cover.jpg');
+                          e.target.onerror = () => {
+                            console.log('备选封面也加载失败，设为已加载状态');
+                            setScifiImgLoaded(true);
+                            e.target.style.display = 'none';
+                          };
+                        };
+                      }
                     }}
                   />
                 ) : (
@@ -1059,13 +1130,42 @@ function Home() {
                     onError={(e) => {
                       console.log('言情小说封面加载失败，详细路径:', e.target.src);
                       console.log('当前言情小说数据:', romanceNovels[activeRomanceIndex]);
-                      // 尝试使用备选图片
-                      e.target.src = getFullImageUrl('/uploads/default-cover.jpg');
-                      e.target.onerror = () => {
-                        console.log('备选封面也加载失败，设为已加载状态');
-                        setRomanceImgLoaded(true);
-                        e.target.style.display = 'none';
-                      };
+                      
+                      // 检查是否是iOS设备
+                      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                      
+                      if (isIOS) {
+                        console.log('检测到iOS设备，使用特殊处理');
+                        // 在iOS上，尝试使用不同的缓存策略
+                        const timestamp = new Date().getTime();
+                        const originalSrc = e.target.src.split('?')[0]; // 移除可能存在的查询参数
+                        e.target.src = `${originalSrc}?t=${timestamp}`;
+                        
+                        // 如果再次失败，使用默认图片
+                        e.target.onerror = () => {
+                          console.log('iOS设备上二次加载失败，使用默认图片');
+                          e.target.src = getFullImageUrl('/uploads/default-cover.jpg');
+                          e.target.onerror = null; // 防止无限循环
+                          setRomanceImgLoaded(true);
+                        };
+                      } else {
+                        // 非iOS设备使用原来的逻辑
+                        // 直接使用绝对路径尝试一次
+                        const baseUrl = process.env.REACT_APP_API_URL?.replace('/api', '') || 'https://novel-reading-website-backend.onrender.com';
+                        const directUrl = `${baseUrl}${romanceNovels[activeRomanceIndex].coverImage}`;
+                        console.log('尝试直接使用绝对路径:', directUrl);
+                        e.target.src = directUrl;
+                        
+                        e.target.onerror = () => {
+                          console.log('直接路径也加载失败，尝试使用备选图片');
+                          e.target.src = getFullImageUrl('/uploads/default-cover.jpg');
+                          e.target.onerror = () => {
+                            console.log('备选封面也加载失败，设为已加载状态');
+                            setRomanceImgLoaded(true);
+                            e.target.style.display = 'none';
+                          };
+                        };
+                      }
                     }}
                   />
                 ) : (
