@@ -904,15 +904,6 @@ html {
     opacity: var(--section-opacity, 1);
   }
   
-  /* iOS iPhone 设备特别处理 */
-  @media not (min-width: 768px) and (orientation: landscape) {
-    .section::after {
-      /* 保持所有图片大小一致，不过度放大 */
-      background-size: auto 100% !important;
-      background-position: center center !important;
-    }
-  }
-  
   /* 内容层级提高，确保在背景之上 */
   .content-block {
     z-index: 3;
@@ -942,25 +933,26 @@ html {
     background-position: center center !important;
   }
   
-  /* 横屏iPad的特定样式 - 把iPad当作Mac处理 */
+  /* 横屏iPad的特定样式 */
   @media (orientation: landscape) {
     .section {
       /* 控制背景图片缩放 */
-      background-size: cover !important;
+      background-size: contain !important;
       background-position: center center !important;
     }
     
-    /* 使用背景比例约束，确保合适的覆盖方式 */
+    /* 使用背景比例约束，防止图片过大 */
     @supports (-webkit-touch-callout: none) {
       .section::after {
-        background-size: cover !important;
+        background-size: 100% auto !important;
         background-position: center center !important;
-        /* 移除之前的放大效果 */
-        transform: none;
+        /* 确保背景图片完全覆盖 */
+        object-fit: cover;
+        transform: scale(1.2);
       }
     }
     
-    /* 调整小说卡片大小，确保在iPad横屏模式下美观 */
+    /* 调整小说卡片大小，避免在iPad横屏模式下过大 */
     .novel-card {
       width: 280px;
       height: 400px;

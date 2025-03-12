@@ -305,13 +305,6 @@ function Home() {
       // 获取所有section元素
       const sections = document.querySelectorAll('.section');
       
-      // 检测设备类型
-      const isIPad = /iPad/.test(navigator.userAgent) || 
-                    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 && !window.MSStream);
-      const isIPhone = isIOS && !isIPad;
-      const isLandscape = window.innerWidth > window.innerHeight;
-      const isMobile = (window.innerWidth < 768 && !isIPad) || isIPhone;
-      
       // 为每个section计算可见度
       sections.forEach((section, index) => {
         const rect = section.getBoundingClientRect();
@@ -328,9 +321,25 @@ function Home() {
         
         // 设置背景图片CSS变量
         let bgImage;
+        if (section.classList.contains('welcome-section')) {
+          bgImage = window.innerWidth < 768 ? welcomeBgMobile : welcomeBg;
+        } else if (section.classList.contains('fantasy-section')) {
+          bgImage = window.innerWidth < 768 ? fantasyBgMobile : fantasyBg;
+        } else if (section.classList.contains('scifi-section')) {
+          bgImage = window.innerWidth < 768 ? scifiBgMobile : scifiBg;
+        } else if (section.classList.contains('romance-section')) {
+          bgImage = window.innerWidth < 768 ? romanceBgMobile : romanceBg;
+        } else if (section.classList.contains('end-section')) {
+          bgImage = window.innerWidth < 768 ? endBgMobile : endBg;
+        }
         
-        // iPhone或窄屏设备使用移动版图片
-        if (isMobile) {
+        // 适用于iPad横屏模式的特别处理
+        const isIPad = /iPad/.test(navigator.userAgent) || 
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 && !window.MSStream);
+        const isLandscape = window.innerWidth > window.innerHeight;
+        
+        if (isIPad && isLandscape) {
+          // iPad横屏模式使用移动版图片，但控制缩放比例
           if (section.classList.contains('welcome-section')) {
             bgImage = welcomeBgMobile;
           } else if (section.classList.contains('fantasy-section')) {
@@ -341,19 +350,6 @@ function Home() {
             bgImage = romanceBgMobile;
           } else if (section.classList.contains('end-section')) {
             bgImage = endBgMobile;
-          }
-        } else {
-          // iPad和Mac使用桌面版图片
-          if (section.classList.contains('welcome-section')) {
-            bgImage = welcomeBg;
-          } else if (section.classList.contains('fantasy-section')) {
-            bgImage = fantasyBg;
-          } else if (section.classList.contains('scifi-section')) {
-            bgImage = scifiBg;
-          } else if (section.classList.contains('romance-section')) {
-            bgImage = romanceBg;
-          } else if (section.classList.contains('end-section')) {
-            bgImage = endBg;
           }
         }
         
@@ -400,18 +396,25 @@ function Home() {
       if (isIOS) {
         const sections = document.querySelectorAll('.section');
         sections.forEach((section) => {
-          // 检测设备类型
-          const isIPad = /iPad/.test(navigator.userAgent) || 
-                        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 && !window.MSStream);
-          const isIPhone = isIOS && !isIPad;
-          const isLandscape = window.innerWidth > window.innerHeight;
-          const isMobile = (window.innerWidth < 768 && !isIPad) || isIPhone;
-          
           let bgImage;
+          if (section.classList.contains('welcome-section')) {
+            bgImage = window.innerWidth < 768 ? welcomeBgMobile : welcomeBg;
+          } else if (section.classList.contains('fantasy-section')) {
+            bgImage = window.innerWidth < 768 ? fantasyBgMobile : fantasyBg;
+          } else if (section.classList.contains('scifi-section')) {
+            bgImage = window.innerWidth < 768 ? scifiBgMobile : scifiBg;
+          } else if (section.classList.contains('romance-section')) {
+            bgImage = window.innerWidth < 768 ? romanceBgMobile : romanceBg;
+          } else if (section.classList.contains('end-section')) {
+            bgImage = window.innerWidth < 768 ? endBgMobile : endBg;
+          }
           
-          // iPhone或窄屏设备使用移动版图片
-          if (isMobile) {
-            console.log('初始化：使用移动版图片', isIPhone ? '(iPhone设备)' : '(窄屏设备)');
+          // iPad横屏模式特殊处理
+          const isIPad = /iPad/.test(navigator.userAgent) || 
+                       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 && !window.MSStream);
+          const isLandscape = window.innerWidth > window.innerHeight;
+          
+          if (isIPad && isLandscape) {
             if (section.classList.contains('welcome-section')) {
               bgImage = welcomeBgMobile;
             } else if (section.classList.contains('fantasy-section')) {
@@ -422,20 +425,6 @@ function Home() {
               bgImage = romanceBgMobile;
             } else if (section.classList.contains('end-section')) {
               bgImage = endBgMobile;
-            }
-          } else {
-            // iPad和Mac使用桌面版图片
-            console.log('初始化：使用桌面版图片', isIPad ? '(iPad设备)' : '(桌面设备)');
-            if (section.classList.contains('welcome-section')) {
-              bgImage = welcomeBg;
-            } else if (section.classList.contains('fantasy-section')) {
-              bgImage = fantasyBg;
-            } else if (section.classList.contains('scifi-section')) {
-              bgImage = scifiBg;
-            } else if (section.classList.contains('romance-section')) {
-              bgImage = romanceBg;
-            } else if (section.classList.contains('end-section')) {
-              bgImage = endBg;
             }
           }
           
@@ -484,14 +473,8 @@ function Home() {
     const isIPad = /iPad/.test(navigator.userAgent) || 
                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 && !window.MSStream);
     
-    // 检测是否为iPhone (iOS但不是iPad)
-    const isIPhone = isIOS && !isIPad;
-    
-    // 检测是否为横屏模式
-    const isLandscape = window.innerWidth > window.innerHeight;
-    
-    // 检测是否为移动设备（屏幕宽度小于768px，但不包括iPad横屏）
-    const isMobile = (window.innerWidth < 768 && !isIPad) || isIPhone;
+    // 检测是否为移动设备（屏幕宽度小于768px）
+    const isMobile = window.innerWidth < 768 || isIOS;
     
     // 使用forceUpdate状态确保在窗口大小变化时重新计算
     // eslint-disable-next-line no-unused-vars
@@ -500,17 +483,16 @@ function Home() {
     // 根据设备类型选择合适的背景图片
     let backgroundImage = imagePath;
     
-    // iPhone设备或窄屏设备使用移动版图片
-    if (isMobile) {
-      console.log('使用移动版图片', isIPhone ? '(iPhone设备)' : '(窄屏设备)');
+    // 如果是移动设备或iOS设备，使用移动版图片
+    if (isMobile || isIOS) {
+      console.log('使用移动版图片', isIOS ? '(iOS设备)' : '(窄屏设备)');
       if (imagePath === welcomeBg) backgroundImage = welcomeBgMobile;
       else if (imagePath === fantasyBg) backgroundImage = fantasyBgMobile;
       else if (imagePath === scifiBg) backgroundImage = scifiBgMobile;
       else if (imagePath === romanceBg) backgroundImage = romanceBgMobile;
       else if (imagePath === endBg) backgroundImage = endBgMobile;
     } else {
-      // iPad和Mac使用桌面版图片
-      console.log('使用桌面版图片', isIPad ? '(iPad设备)' : '(桌面设备)');
+      console.log('使用桌面版图片');
     }
     
     // 如果是iOS设备，我们使用CSS变量控制背景，返回空对象
