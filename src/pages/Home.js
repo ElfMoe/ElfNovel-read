@@ -297,31 +297,6 @@ function Home() {
         element.classList.add('in-view');
       }
     });
-    
-    // 在iPad横屏模式下特殊处理section背景
-    const isIPad = /iPad/.test(navigator.userAgent) || 
-                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 && !window.MSStream);
-    const isIPadLandscape = isIPad && window.innerWidth > window.innerHeight;
-    
-    if (isIPadLandscape) {
-      // 获取所有section元素
-      const sections = document.querySelectorAll('.section');
-      
-      // 检查每个section是否在视口中
-      sections.forEach(section => {
-        // 判断section是否在视口中（大部分内容可见）
-        const rect = section.getBoundingClientRect();
-        const isInView = rect.top < window.innerHeight / 2 && rect.bottom > window.innerHeight / 2;
-        
-        if (isInView) {
-          // 添加in-viewport类以显示背景
-          section.classList.add('in-viewport');
-        } else {
-          // 如果不在视口中，则移除类
-          section.classList.remove('in-viewport');
-        }
-      });
-    }
   };
   
   // 添加窗口大小变化监听，确保在调整窗口大小时重新渲染以切换合适的背景图片
@@ -342,48 +317,6 @@ function Home() {
         setFantasyImgLoaded(false);
         setScifiImgLoaded(false);
         setRomanceImgLoaded(false);
-        
-        // iPad横屏模式处理
-        if (isLandscape) {
-          console.log('iPad横屏模式，应用特殊背景处理');
-          
-          // 设置CSS变量，用于伪元素背景图片
-          document.documentElement.style.setProperty('--welcome-bg-image', `url(${welcomeBg})`);
-          document.documentElement.style.setProperty('--fantasy-bg-image', `url(${fantasyBg})`);
-          document.documentElement.style.setProperty('--scifi-bg-image', `url(${scifiBg})`);
-          document.documentElement.style.setProperty('--romance-bg-image', `url(${romanceBg})`);
-          document.documentElement.style.setProperty('--end-bg-image', `url(${endBg})`);
-          
-          // 检查哪个section在视口中并应用in-viewport类
-          const sections = document.querySelectorAll('.section');
-          sections.forEach(section => {
-            const rect = section.getBoundingClientRect();
-            const isInView = rect.top < window.innerHeight / 2 && rect.bottom > window.innerHeight / 2;
-            
-            if (isInView) {
-              // 添加in-viewport类以显示背景
-              section.classList.add('in-viewport');
-            } else {
-              // 如果不在视口中，则移除类
-              section.classList.remove('in-viewport');
-            }
-          });
-        } else {
-          console.log('iPad竖屏模式，使用移动设备样式');
-          
-          // 移除CSS变量
-          document.documentElement.style.removeProperty('--welcome-bg-image');
-          document.documentElement.style.removeProperty('--fantasy-bg-image');
-          document.documentElement.style.removeProperty('--scifi-bg-image');
-          document.documentElement.style.removeProperty('--romance-bg-image');
-          document.documentElement.style.removeProperty('--end-bg-image');
-          
-          // 竖屏模式使用移动设备样式
-          document.querySelectorAll('.section').forEach(section => {
-            section.classList.remove('in-viewport');
-            section.style.backgroundImage = ''; // 恢复默认
-          });
-        }
       }
     };
     
@@ -411,17 +344,17 @@ function Home() {
   
   // 获取背景样式
   const getBackgroundStyle = (imagePath, position) => {
-    // 检测是否为iOS设备
+    // 检测是否为iOS设备 - 不包括Mac
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     
-    // 检测是否为iPad
+    // 检测是否为iPad - 包括新款iPad Pro (使用MacIntel平台标识)
     const isIPad = /iPad/.test(navigator.userAgent) || 
                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 && !window.MSStream);
     
     // 检测iPad是否处于横屏模式
     const isIPadLandscape = isIPad && window.innerWidth > window.innerHeight;
     
-    // 检测是否为移动设备（屏幕宽度小于768px）
+    // 检测是否为移动设备
     const isMobile = window.innerWidth < 768 || (isIOS && !isIPadLandscape);
     
     // 使用forceUpdate状态确保在窗口大小变化时重新计算
@@ -443,17 +376,16 @@ function Home() {
       console.log('使用桌面版图片');
     }
     
-    // iPad横屏模式 - 使用特定的设置确保背景不随滚动移动
+    // iPad横屏模式与桌面版使用相同的背景设置
     if (isIPadLandscape) {
-      console.log('iPad横屏模式：使用特殊固定背景设置');
-      // 不使用background-attachment: fixed，因为在iOS Safari上不可靠
-      // 而是使用postion: fixed的伪元素在CSS中实现
-      // 这里只提供背景图片和基本属性
+      console.log('iPad横屏模式：使用与桌面相同的背景设置');
       return {
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
         backgroundPosition: position,
+        backgroundAttachment: 'fixed',
         backgroundRepeat: 'no-repeat',
+        transition: 'background-position 0.5s ease-out'
       };
     }
     // 其他iOS设备保持原有处理
@@ -732,35 +664,6 @@ function Home() {
       ]
     }
   ];
-
-  // 在组件挂载时设置CSS变量，用于iPad横屏模式下的背景图片
-  useEffect(() => {
-    // 检测是否为iPad横屏模式
-    const isIPad = /iPad/.test(navigator.userAgent) || 
-                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 && !window.MSStream);
-    const isIPadLandscape = isIPad && window.innerWidth > window.innerHeight;
-    
-    if (isIPadLandscape) {
-      console.log('iPad横屏模式：设置CSS变量');
-      // 设置CSS变量，用于背景图片
-      document.documentElement.style.setProperty('--welcome-bg-image', `url(${welcomeBg})`);
-      document.documentElement.style.setProperty('--fantasy-bg-image', `url(${fantasyBg})`);
-      document.documentElement.style.setProperty('--scifi-bg-image', `url(${scifiBg})`);
-      document.documentElement.style.setProperty('--romance-bg-image', `url(${romanceBg})`);
-      document.documentElement.style.setProperty('--end-bg-image', `url(${endBg})`);
-    }
-    
-    // 组件卸载时清理
-    return () => {
-      if (isIPadLandscape) {
-        document.documentElement.style.removeProperty('--welcome-bg-image');
-        document.documentElement.style.removeProperty('--fantasy-bg-image');
-        document.documentElement.style.removeProperty('--scifi-bg-image');
-        document.documentElement.style.removeProperty('--romance-bg-image');
-        document.documentElement.style.removeProperty('--end-bg-image');
-      }
-    };
-  }, []);
 
   return (
     <div className="home-container" style={{ 

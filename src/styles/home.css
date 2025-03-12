@@ -871,114 +871,46 @@ html {
   /* 默认iOS设备样式 */
   .section {
     background-attachment: scroll !important;
-    /* 使用GPU加速提高iOS设备上的滚动性能 */
+    background-size: cover !important;
     -webkit-transform: translateZ(0);
     -webkit-backface-visibility: hidden;
-    /* 禁用背景呼吸动画，在iOS设备上使用固定大小 */
     animation: none !important;
-    background-size: cover !important;
   }
   
-  /* 为每个场景单独设置背景大小 */
-  .welcome-section {
-    background-size: cover !important;
-  }
-  
-  .fantasy-section, .scifi-section, .romance-section, .end-section {
-    background-size: cover !important;
-  }
-  
-  /* iPad横屏模式特殊处理 - 使用伪元素实现固定背景 */
+  /* iPad特殊处理 */
   @media (min-width: 768px) and (orientation: landscape) {
-    /* 检测是否为iPad的特定媒体查询 */
-    @supports (padding-top: env(safe-area-inset-top)) or (-webkit-overflow-scrolling: touch) {
-      /* 基本section设置 - 移除背景图片 */
-      .section {
-        background-image: none !important; /* 移除背景图片，改用伪元素实现 */
-        position: relative !important;
-        overflow: hidden !important;
-        animation: none !important; /* 禁用动画 */
-      }
-      
-      /* 使用伪元素:before作为滤镜层 */
-      .section::before {
-        content: '' !important;
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        z-index: 1 !important; /* 在背景图之上，内容之下 */
-      }
-      
-      /* 使用伪元素:after作为固定背景图 */
-      .section::after {
-        content: '' !important;
-        position: fixed !important; /* 关键：使用fixed定位 */
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        background-size: cover !important;
-        background-position: center center !important;
-        background-repeat: no-repeat !important;
-        z-index: 0 !important; /* 在最底层 */
-        transform: translateZ(0) !important; /* 启用硬件加速 */
-        transition: opacity 0.5s ease !important; /* 平滑过渡 */
-        opacity: 0 !important; /* 初始隐藏 */
-      }
-
-      /* 当section进入视口时显示其背景 */
-      .section.in-viewport::after {
-        opacity: 1 !important;
-      }
-      
-      /* 为每个section设置特定背景图和滤镜 */
-      .welcome-section::after {
-        background-image: var(--welcome-bg-image) !important;
-      }
-      
-      .fantasy-section::after {
-        background-image: var(--fantasy-bg-image) !important;
-      }
-      
-      .scifi-section::after {
-        background-image: var(--scifi-bg-image) !important;
-      }
-      
-      .romance-section::after {
-        background-image: var(--romance-bg-image) !important;
-      }
-      
-      .end-section::after {
-        background-image: var(--end-bg-image) !important;
-      }
-      
-      /* 滤镜层样式 */
-      .welcome-section::before {
-        background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6)),
-                    linear-gradient(to right, rgba(120,70,180,0.2), rgba(50,20,90,0.3)) !important;
-      }
-      
-      .fantasy-section::before {
-        background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6)), 
-                    linear-gradient(to right, rgba(100,50,200,0.2), rgba(50,0,100,0.3)) !important;
-      }
-      
-      .scifi-section::before {
-        background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6)),
-                    linear-gradient(to right, rgba(0,100,255,0.3), rgba(0,0,100,0.3)) !important;
-      }
-      
-      .romance-section::before {
-        background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6)),
-                    linear-gradient(to right, rgba(255,150,150,0.3), rgba(200,100,150,0.3)) !important;
-      }
-      
-      .end-section::before {
-        background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6)),
-                    linear-gradient(to right, rgba(255,180,50,0.3), rgba(255,120,50,0.3)) !important;
-      }
+    /* 仅针对iPad横屏模式 */
+    body, html {
+      overflow-x: hidden; /* 避免横向滚动 */
+    }
+    
+    .section {
+      background-attachment: scroll !important; /* Safari中fixed不可靠，使用替代方案 */
+      background-size: cover !important;
+      background-repeat: no-repeat !important;
+      transform: none !important;
+      -webkit-transform: none !important;
+    }
+    
+    /* 为每个section单独设置，以确保背景固定效果 */
+    .welcome-section {
+      background-image: url(../assets/Welcome.jpg) !important;
+    }
+    
+    .fantasy-section {
+      background-image: url(../assets/FantasyPicture1.jpg) !important;
+    }
+    
+    .scifi-section {
+      background-image: url(../assets/CyberpunkPage.jpg) !important;
+    }
+    
+    .romance-section {
+      background-image: url(../assets/Romance.jpg) !important;
+    }
+    
+    .end-section {
+      background-image: url(../assets/Welcome.jpg) !important;
     }
   }
 }
