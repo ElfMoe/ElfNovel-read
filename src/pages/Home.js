@@ -375,7 +375,7 @@ function Home() {
     const isIPadLandscape = isIPad && window.innerWidth > window.innerHeight;
     
     // 检测是否为移动设备（屏幕宽度小于768px）
-    const isMobile = window.innerWidth < 768 || isIOS;
+    const isMobile = window.innerWidth < 768 || (isIOS && !isIPadLandscape);
     
     // 使用forceUpdate状态确保在窗口大小变化时重新计算
     // eslint-disable-next-line no-unused-vars
@@ -384,8 +384,8 @@ function Home() {
     // 根据设备类型选择合适的背景图片
     let backgroundImage = imagePath;
     
-    // 如果是移动设备或iOS设备，使用移动版图片
-    if (isMobile || isIOS) {
+    // 如果是移动设备或iOS设备（但不是iPad横屏），使用移动版图片
+    if (isMobile) {
       console.log('使用移动版图片', isIOS ? '(iOS设备)' : '(窄屏设备)');
       if (imagePath === welcomeBg) backgroundImage = welcomeBgMobile;
       else if (imagePath === fantasyBg) backgroundImage = fantasyBgMobile;
@@ -398,16 +398,17 @@ function Home() {
     
     // 为iPad横屏模式添加特殊处理
     if (isIPadLandscape) {
+      console.log('iPad横屏模式：使用固定背景');
       return {
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: '100% auto', // 固定大小，不再使用cover
         backgroundPosition: 'center center', // 统一居中
-        backgroundAttachment: 'scroll', // iOS上使用scroll
+        backgroundAttachment: 'fixed', // 使用fixed替代scroll，让背景固定
         backgroundRepeat: 'no-repeat',
-        transition: 'none', // 禁用过渡效果
-        willChange: 'auto', // 不使用willChange以避免潜在问题
-        transform: 'none', // 不使用transform
-        WebkitBackfaceVisibility: 'hidden', // iOS Safari优化
+        // 使用Safari特定属性来帮助固定背景
+        WebkitBackfaceVisibility: 'hidden',
+        WebkitPerspective: 1000,
+        transform: 'translate3d(0,0,0)', // 强制硬件加速
       };
     }
     // 为其他iOS设备添加特殊处理
@@ -416,7 +417,7 @@ function Home() {
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
         backgroundPosition: position,
-        backgroundAttachment: 'scroll', // iOS上使用scroll而不是fixed
+        backgroundAttachment: 'scroll', // 其他iOS设备仍然使用scroll
         backgroundRepeat: 'no-repeat',
         transition: 'background-position 0.5s ease-out',
         willChange: 'background-position', // 提高性能
