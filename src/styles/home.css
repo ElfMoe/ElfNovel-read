@@ -41,7 +41,7 @@ html {
     background-size: 100% auto;
   }
   50% {
-    background-size: 105% auto;
+    background-size: 103% auto; /* 减小到103%，原来是105% */
   }
   100% {
     background-size: 100% auto;
@@ -873,6 +873,18 @@ html {
     /* 使用GPU加速提高iOS设备上的滚动性能 */
     -webkit-transform: translateZ(0);
     -webkit-backface-visibility: hidden;
+    /* 禁用背景呼吸动画，在iOS设备上使用固定大小 */
+    animation: none !important;
+    background-size: cover !important;
+  }
+  
+  /* 为每个场景单独设置背景大小 */
+  .welcome-section {
+    background-size: cover !important;
+  }
+  
+  .fantasy-section, .scifi-section, .romance-section, .end-section {
+    background-size: cover !important;
   }
 }
 
@@ -880,6 +892,14 @@ html {
 @media (min-width: 768px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape) {
   .section {
     background-size: cover !important;
+    background-position: center center !important;
+    /* 缩小背景图片大小 */
+    background-size: 100% auto !important;
+  }
+  
+  /* 确保每个区域使用相同的背景设置 */
+  .welcome-section, .fantasy-section, .scifi-section, .romance-section, .end-section {
+    background-size: 100% auto !important;
     background-position: center center !important;
   }
 } 

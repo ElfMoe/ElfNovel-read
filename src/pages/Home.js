@@ -317,11 +317,34 @@ function Home() {
         setFantasyImgLoaded(false);
         setScifiImgLoaded(false);
         setRomanceImgLoaded(false);
+        
+        // 如果是横屏模式，应用额外样式调整
+        if (isLandscape) {
+          console.log('iPad横屏模式，应用特殊背景样式');
+          // 强制更新所有section的背景样式
+          document.querySelectorAll('.section').forEach(section => {
+            section.style.backgroundSize = '100% auto';
+            section.style.backgroundPosition = 'center center';
+            // 禁用动画
+            section.style.animation = 'none';
+          });
+        } else {
+          console.log('iPad竖屏模式，恢复正常背景样式');
+          // 恢复正常样式
+          document.querySelectorAll('.section').forEach(section => {
+            section.style.backgroundSize = '';
+            section.style.backgroundPosition = '';
+            section.style.animation = '';
+          });
+        }
       }
     };
     
     window.addEventListener('resize', handleResize);
     window.addEventListener('orientationchange', handleResize);
+    
+    // 初始化时执行一次
+    handleResize();
     
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -348,6 +371,9 @@ function Home() {
     const isIPad = /iPad/.test(navigator.userAgent) || 
                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 && !window.MSStream);
     
+    // 检测iPad是否处于横屏模式
+    const isIPadLandscape = isIPad && window.innerWidth > window.innerHeight;
+    
     // 检测是否为移动设备（屏幕宽度小于768px）
     const isMobile = window.innerWidth < 768 || isIOS;
     
@@ -370,8 +396,22 @@ function Home() {
       console.log('使用桌面版图片');
     }
     
-    // 为iOS设备添加特殊处理
-    if (isIOS) {
+    // 为iPad横屏模式添加特殊处理
+    if (isIPadLandscape) {
+      return {
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: '100% auto', // 固定大小，不再使用cover
+        backgroundPosition: 'center center', // 统一居中
+        backgroundAttachment: 'scroll', // iOS上使用scroll
+        backgroundRepeat: 'no-repeat',
+        transition: 'none', // 禁用过渡效果
+        willChange: 'auto', // 不使用willChange以避免潜在问题
+        transform: 'none', // 不使用transform
+        WebkitBackfaceVisibility: 'hidden', // iOS Safari优化
+      };
+    }
+    // 为其他iOS设备添加特殊处理
+    else if (isIOS) {
       return {
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
