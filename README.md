@@ -1,5 +1,12 @@
 # Novel Reading Platform - Frontend
 
+## 🔗 Related Repositories |
+- **Backend Repository: [novel-reading-backend](https://github.com/CJ020328/Novel-Reading-Website-Backend)
+
+## 🌍 Live Demo |
+- **Frontend (User Interface)**: [https://novel-reading-frontend.vercel.app/]
+- **Backend (API Server) | 后端（API服务器）**: [https://novel-reading-website-backend.onrender.com/]
+
 ## Overview
 This is the frontend part of a novel reading platform, a personal side project aimed at creating a space where anyone can easily share their stories and novels. The goal is to encourage more people to become authors while providing readers with an enjoyable reading experience.
 
@@ -65,6 +72,13 @@ The frontend is designed to work with the accompanying backend API. By default, 
 ---
 
 # 小说阅读平台 - 前端
+
+## 🔗 相关仓库
+- **后端仓库**: [novel-reading-backend](https://github.com/CJ020328/Novel-Reading-Website-Backend)
+
+## 🌍 在线访问
+- **前端（用户界面）**: [https://novel-reading-frontend.vercel.app/]
+- **后端（API 服务器）**: [https://novel-reading-website-backend.onrender.com/]
 
 ## 概述
 这是小说阅读平台的前端部分，是一个个人项目，旨在创建一个空间，让任何人都能轻松分享自己的故事和小说。该项目的目标是鼓励更多人成为作者，同时为读者提供愉悦的阅读体验。
