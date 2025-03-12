@@ -318,23 +318,25 @@ function Home() {
         setScifiImgLoaded(false);
         setRomanceImgLoaded(false);
         
-        // 如果是横屏模式，应用额外样式调整
+        // 如果是横屏模式，iPad将使用与桌面相同的样式，无需特殊处理
         if (isLandscape) {
-          console.log('iPad横屏模式，应用特殊背景样式');
-          // 强制更新所有section的背景样式
+          console.log('iPad横屏模式，使用与桌面相同的背景样式');
+          // 移除任何可能应用的特殊样式
           document.querySelectorAll('.section').forEach(section => {
-            section.style.backgroundSize = '100% auto';
-            section.style.backgroundPosition = 'center center';
-            // 禁用动画
-            section.style.animation = 'none';
-          });
-        } else {
-          console.log('iPad竖屏模式，恢复正常背景样式');
-          // 恢复正常样式
-          document.querySelectorAll('.section').forEach(section => {
+            // 重置为默认值，让CSS媒体查询接管
             section.style.backgroundSize = '';
             section.style.backgroundPosition = '';
             section.style.animation = '';
+            section.style.backgroundAttachment = '';
+          });
+        } else {
+          console.log('iPad竖屏模式，使用移动设备样式');
+          // 竖屏模式使用移动设备样式
+          document.querySelectorAll('.section').forEach(section => {
+            section.style.backgroundSize = 'cover';
+            section.style.backgroundPosition = 'center';
+            section.style.animation = 'none';
+            section.style.backgroundAttachment = 'scroll';
           });
         }
       }
@@ -384,7 +386,7 @@ function Home() {
     // 根据设备类型选择合适的背景图片
     let backgroundImage = imagePath;
     
-    // 如果是移动设备或iOS设备（但不是iPad横屏），使用移动版图片
+    // 如果是移动设备，但不是iPad横屏，使用移动版图片
     if (isMobile) {
       console.log('使用移动版图片', isIOS ? '(iOS设备)' : '(窄屏设备)');
       if (imagePath === welcomeBg) backgroundImage = welcomeBgMobile;
@@ -396,38 +398,36 @@ function Home() {
       console.log('使用桌面版图片');
     }
     
-    // 为iPad横屏模式添加特殊处理
+    // iPad横屏模式 - 完全使用与桌面相同的设置
     if (isIPadLandscape) {
-      console.log('iPad横屏模式：使用固定背景');
+      console.log('iPad横屏模式：完全使用桌面版设置');
       return {
         backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: '100% auto', // 固定大小，不再使用cover
-        backgroundPosition: 'center center', // 统一居中
-        backgroundAttachment: 'fixed', // 使用fixed替代scroll，让背景固定
+        backgroundSize: 'cover',
+        backgroundPosition: position,
+        backgroundAttachment: 'fixed',
         backgroundRepeat: 'no-repeat',
-        // 使用Safari特定属性来帮助固定背景
-        WebkitBackfaceVisibility: 'hidden',
-        WebkitPerspective: 1000,
-        transform: 'translate3d(0,0,0)', // 强制硬件加速
+        transition: 'background-position 0.5s ease-out'
       };
     }
-    // 为其他iOS设备添加特殊处理
+    // 其他iOS设备保持原有处理
     else if (isIOS) {
       return {
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
         backgroundPosition: position,
-        backgroundAttachment: 'scroll', // 其他iOS设备仍然使用scroll
+        backgroundAttachment: 'scroll', // 非iPad横屏的iOS设备使用scroll
         backgroundRepeat: 'no-repeat',
         transition: 'background-position 0.5s ease-out',
-        willChange: 'background-position', // 提高性能
-        transform: 'translateZ(0)', // 强制硬件加速
-        WebkitBackfaceVisibility: 'hidden', // iOS Safari优化
+        willChange: 'background-position',
+        transform: 'translateZ(0)',
+        WebkitBackfaceVisibility: 'hidden',
         WebkitPerspective: 1000,
-        WebkitTransform: 'translate3d(0,0,0)', // iOS Safari优化
+        WebkitTransform: 'translate3d(0,0,0)'
       };
     }
     
+    // 桌面版的默认设置
     return {
       backgroundImage: `url(${backgroundImage})`,
       backgroundSize: 'cover',
