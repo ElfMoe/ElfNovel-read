@@ -864,4 +864,22 @@ html {
 .romance-section .category-hint {
   font-family: 'Comic Sans MS', cursive, sans-serif;
   letter-spacing: 0.8px;
+}
+
+/* iOS设备背景图片优化 */
+@supports (-webkit-touch-callout: none) {
+  .section {
+    background-attachment: scroll !important;
+    /* 使用GPU加速提高iOS设备上的滚动性能 */
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+  }
+}
+
+/* 针对iPad的特殊处理 */
+@media (min-width: 768px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape) {
+  .section {
+    background-size: cover !important;
+    background-position: center center !important;
+  }
 } 

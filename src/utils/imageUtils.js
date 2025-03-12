@@ -11,6 +11,9 @@ export const getFullImageUrl = (url, defaultImage = '/images/default-cover.jpg',
   // 获取API基础URL
   const baseUrl = process.env.REACT_APP_API_URL?.replace('/api', '') || 'https://novel-reading-website-backend.onrender.com';
   
+  // 检测是否为iOS设备
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  
   // 如果URL是空或undefined，直接返回默认图片的绝对路径
   if (!url) {
     const defaultUrl = `${baseUrl}${defaultImage}`;
@@ -63,6 +66,13 @@ export const getFullImageUrl = (url, defaultImage = '/images/default-cover.jpg',
     finalUrl = `${baseUrl}${url}`;
   } else {
     finalUrl = `${baseUrl}/${url}`;
+  }
+  
+  // 为iOS设备添加时间戳参数以避免缓存问题
+  if (isIOS) {
+    const timestamp = new Date().getTime();
+    finalUrl = `${finalUrl}?t=${timestamp}`;
+    console.log('iOS设备，添加时间戳参数:', finalUrl);
   }
   
   // 不再使用fetch验证图片，因为这在iOS上可能会有问题
@@ -190,8 +200,12 @@ export const handleImageError = (event) => {
     // 检查是否是iOS设备
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     
+    // 检查是否为iPad
+    const isIPad = /iPad/.test(navigator.userAgent) || 
+                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 && !window.MSStream);
+    
     if (isIOS) {
-        console.log('检测到iOS设备，使用特殊处理');
+        console.log('检测到iOS设备，使用特殊处理', isIPad ? '(iPad)' : '(iPhone/iPod)');
         // 在iOS上，尝试使用不同的缓存策略
         const timestamp = new Date().getTime();
         const originalSrc = event.target.src.split('?')[0]; // 移除可能存在的查询参数

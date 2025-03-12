@@ -304,12 +304,28 @@ function Home() {
     const handleResize = () => {
       // 强制重新渲染组件
       setForceUpdate(prev => !prev);
+      
+      // 检测设备方向变化，特别是iPad横竖屏切换
+      const isLandscape = window.innerWidth > window.innerHeight;
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      const isIPad = /iPad/.test(navigator.userAgent) || 
+                    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 && !window.MSStream);
+      
+      if (isIPad) {
+        console.log(`iPad ${isLandscape ? '横屏' : '竖屏'} 模式，重新加载图片`);
+        // 重置图片加载状态，强制重新加载
+        setFantasyImgLoaded(false);
+        setScifiImgLoaded(false);
+        setRomanceImgLoaded(false);
+      }
     };
     
     window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleResize);
     
     return () => {
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
     };
   }, []);
   
@@ -325,11 +341,15 @@ function Home() {
   
   // 获取背景样式
   const getBackgroundStyle = (imagePath, position) => {
-    // 检测是否为移动设备（屏幕宽度小于768px）
-    const isMobile = window.innerWidth < 768;
-    
     // 检测是否为iOS设备
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    
+    // 检测是否为iPad
+    const isIPad = /iPad/.test(navigator.userAgent) || 
+                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 && !window.MSStream);
+    
+    // 检测是否为移动设备（屏幕宽度小于768px）
+    const isMobile = window.innerWidth < 768 || isIOS;
     
     // 使用forceUpdate状态确保在窗口大小变化时重新计算
     // eslint-disable-next-line no-unused-vars
@@ -338,13 +358,16 @@ function Home() {
     // 根据设备类型选择合适的背景图片
     let backgroundImage = imagePath;
     
-    // 如果是移动设备，使用移动版图片
-    if (isMobile) {
+    // 如果是移动设备或iOS设备，使用移动版图片
+    if (isMobile || isIOS) {
+      console.log('使用移动版图片', isIOS ? '(iOS设备)' : '(窄屏设备)');
       if (imagePath === welcomeBg) backgroundImage = welcomeBgMobile;
       else if (imagePath === fantasyBg) backgroundImage = fantasyBgMobile;
       else if (imagePath === scifiBg) backgroundImage = scifiBgMobile;
       else if (imagePath === romanceBg) backgroundImage = romanceBgMobile;
       else if (imagePath === endBg) backgroundImage = endBgMobile;
+    } else {
+      console.log('使用桌面版图片');
     }
     
     // 为iOS设备添加特殊处理
