@@ -67,7 +67,7 @@ src/
 ```
 
 ## Connect with Backend
-The frontend is designed to work with the accompanying backend API. By default, it's configured to connect to `http://localhost:5000`. You can modify this in `src/services/api.js`.
+The frontend is designed to work with the accompanying backend API. By default, it's configured to connect to `https://novel-reading-website-backend.onrender.com/`. You can modify this in `src/services/api.js`.
 
 ---
 
@@ -140,4 +140,4 @@ src/
 ```
 
 ## 连接后端
-前端设计为与配套的后端API一起工作。默认情况下，它配置为连接到`http://localhost:5000`。您可以在`src/services/api.js`中修改此设置。
+前端设计为与配套的后端API一起工作。默认情况下，它配置为连接到`https://novel-reading-website-backend.onrender.com/`。您可以在`src/services/api.js`中修改此设置。
