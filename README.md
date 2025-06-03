@@ -1,11 +1,11 @@
-# Novel Reading Platform - Frontend
+# Novel Reading Platform - Frontend (Isto é fork, vai para o original pra evitar problemas! Obrigado você por visitar e ao Dev por criar esse sistema! Amém! 
 
 ## 🔗 Related Repositories |
 - **Backend Repository: [novel-reading-backend](https://github.com/CJ020328/Novel-Reading-Website-Backend)
 
 ## 🌍 Live Demo |
-- **Frontend (User Interface)**: [https://novel-reading-frontend.vercel.app/]
-- **Backend (API Server) | 后端（API服务器）**: [https://novel-reading-website-backend.onrender.com/]
+- **Frontend (User Interface)**: [https://elfnovel-read.vercel.app/]
+- **Backend (API Server) | 后端（API服务器）**: [https://elfnovel-read-website-backend.onrender.com/]
 
 ## Overview
 This is the frontend part of a novel reading platform, a personal side project aimed at creating a space where anyone can easily share their stories and novels. The goal is to encourage more people to become authors while providing readers with an enjoyable reading experience.
