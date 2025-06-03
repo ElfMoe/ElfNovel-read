@@ -22,13 +22,13 @@ function Login() {
 
   // 验证规则
   const validateIdentifier = (identifier) => {
-    if (!identifier) return '请输入用户名或邮箱';
+    if (!identifier) return 'Por favor, insira seu nome de usuário ou endereço de e-mail';
     return '';
   };
 
   const validatePassword = (password) => {
-    if (!password) return '请输入密码';
-    if (password.length < 6) return '密码长度不正确';
+    if (!password) return 'Por favor, digite sua senha';
+    if (password.length < 6) return 'Comprimento de senha incorreto';
     return '';
   };
 
@@ -90,23 +90,23 @@ function Login() {
         // 显示不同类型的错误消息
         switch (result.type) {
           case 'not_found':
-            errorMessage = '账号不存在，请先注册';
+            errorMessage = 'The account does not exist, please register first';
             break;
           case 'invalid_credentials':
-            errorMessage = '用户名/邮箱或密码错误';
+            errorMessage = 'Wrong username/email or password';
             break;
           case 'unverified':
-            errorMessage = '您的邮箱尚未验证，请先验证邮箱后再登录';
+            errorMessage = 'Your email address has not been verified yet, please verify your email address first';
             break;
           case 'auth_error':
-            errorMessage = '认证失败，请重新登录';
+            errorMessage = 'Authentication failed, please log in again';
             break;
           case 'network_error':
-            errorMessage = '网络连接错误，请检查您的网络';
+            errorMessage = 'Network connection error, please check your network';
             break;
           default:
             // 使用后端返回的消息或默认消息
-            errorMessage = result.message || '登录失败，请检查您的输入信息';
+            errorMessage = result.message || 'Login failed, please check your input information';
         }
         
         
@@ -119,7 +119,7 @@ function Login() {
       console.error('Login unexpected error:', err); // 添加日志
       setErrors(prev => ({
         ...prev,
-        submit: '登录过程中发生错误，请检查您的网络连接'
+        submit: 'An error occurred during login, please check your network connection'
       }));
     } finally {
       setIsLoading(false);
