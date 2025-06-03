@@ -6,7 +6,7 @@ function Header(props) {
   return (
     <nav className={`navbar navbar-expand-lg ${props.darkMode ? "navbar-dark bg-dark" : "navbar-light bg-light"}`}>
       <div className="container">
-        <Link className="navbar-brand" to="/">小说发布平台</Link>
+        <Link className="navbar-brand" to="/">Novel publishing platform</Link>
 
         <button 
           className="navbar-toggler" 
@@ -23,7 +23,7 @@ function Header(props) {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <Link className="nav-link" to="/">首页</Link>
+              <Link className="nav-link" to="/">Home page</Link>
             </li>
           </ul>
 
@@ -31,7 +31,7 @@ function Header(props) {
             className="btn btn-outline-primary"
             onClick={() => props.setDarkMode(!props.darkMode)}
           >
-            {props.darkMode ? "浅色模式" : "深色模式"}
+            {props.darkMode ? "Light Mode" : "Dark Mode"}
           </button>
         </div>
       </div>
