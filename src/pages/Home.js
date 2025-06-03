@@ -81,56 +81,56 @@ function Home() {
   
   // 添加提示文本数据
   const hintTexts = {
-    fantasy: "触碰这本魔法典籍，隐藏的奇幻世界等待你揭开...",
-    scifi: "接触全息投影，未来科技的秘密向你敞开...",
-    romance: "轻抚这本心动日记，青春故事即将展开..."
+    fantasy: "Toque neste livro mágico e um mundo de fantasia oculto estará esperando você descobrir...",
+    scifi: "Entre em contato com a projeção holográfica, os segredos da tecnologia do futuro estão abertos para você...",
+    romance: "Acaricie este diário comovente e a história da juventude se revelará..."
   };
   
   // 添加点击提示数据，更符合主题的表述
   const clickHintTexts = {
-    fantasy: "施展魔法，揭晓更多奥秘",
-    scifi: "激活全息系统，解锁完整记录",
-    romance: "翻开日记，阅读完整故事"
+    fantasy: "Lance magia e revele mais mistérios",
+    scifi: "Ative o sistema holográfico para desbloquear o registro completo",
+    romance: "Abra o diário e leia a história completa"
   };
   
   // 获取小说数据
   useEffect(() => {
     const fetchNovels = async () => {
-      console.log('开始获取小说数据...');
+      console.log('Comece a obter novos dados...');
       try {
         // 获取更多小说，增加样本数量以便更好地分类
         const response = await novelAPI.getLatestNovels(30);
-        console.log('API响应完整数据:', response);
+        console.log('Dados completos da resposta da API:', response);
         
         if (response.success && response.data && response.data.length > 0) {
-          console.log('成功获取基础小说数据:', response.data);
+          console.log('Dados básicos novos obtidos com sucesso:', response.data);
           
           // 从列表中获取小说ID，然后获取每本小说的详细信息
-          console.log('开始获取详细信息...');
+          console.log('Comece a obter detalhes...');
           const novelDetails = await Promise.all(
             response.data.map(async (novel) => {
               try {
                 // 获取每本小说的详细信息
                 const detailResponse = await novelAPI.getNovelDetail(novel._id);
-                console.log(`小说 ${novel.title} 详细信息:`, detailResponse);
+                console.log(`Detalhes do Romance ${novel.title} Novel foi:`, detailResponse);
                 if (detailResponse.success) {
                   return detailResponse.data;
                 }
                 // 如果无法获取详情，则使用列表数据
                 return novel;
               } catch (err) {
-                console.error(`获取小说 ${novel.title} 详情失败:`, err);
+                console.error(`A Coleta de Dados da Novel - ${novel.title} falhou:`, err);
                 return novel;
               }
             })
           );
           
-          console.log('所有小说详细信息获取完成:', novelDetails);
+          console.log('Todos os detalhes do romance foram obtidos:', novelDetails);
           
           // 检查小说数据结构
           if (novelDetails.length > 0) {
             const sampleNovel = novelDetails[0];
-            console.log('小说详细数据结构示例:', {
+            console.log('Novo exemplo detalhado de estrutura de dados:', {
               id: sampleNovel._id,
               title: sampleNovel.title,
               author: sampleNovel.authorName,
