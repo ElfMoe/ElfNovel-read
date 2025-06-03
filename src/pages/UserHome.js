@@ -252,19 +252,19 @@ function UserHome() {
     // 根据不同情况获取数据
     if (userId) {
       // 有用户ID时，无论是否登录，都获取该用户的公开信息
-      console.log('UserHome获取 - 根据ID获取用户信息:', userId);
+      console.log('UserHome获取 - Get user information based on ID:', userId);
       fetchSpecificUserProfile(userId);
       fetchSpecificUserNovels(userId);
       fetchSpecificUserFavorites(userId);
     } else if (isAuthenticated) {
       // 无用户ID，但已登录，获取当前用户信息
-      console.log('UserHome获取 - 获取当前用户信息');
+      console.log('UserHome获取 - Get current user information');
       fetchUserProfile();
       fetchAuthoredNovels();
       fetchFavorites();
     } else {
       // 未登录且无用户ID，重定向到登录页
-      console.log('UserHome获取 - 重定向到登录页');
+      console.log('UserHome Get - Redirect to login page');
       navigate('/login');
     }
     
@@ -273,29 +273,29 @@ function UserHome() {
   // 获取特定用户的个人资料
   const fetchSpecificUserProfile = async (targetUserId) => {
     try {
-      console.log('开始获取目标用户资料 - 用户ID:', targetUserId);
+      console.log('Start acquiring target user information - User ID:', targetUserId);
       setProfileLoading(true);
       setProfileError(null);
       
       // 调用获取指定用户信息的API
       const response = await userAPI.getUserProfileById(targetUserId);
-      console.log('获取用户资料API响应:', response);
+      console.log('Get User Profile API Response:', response);
       
       if (response && response.success) {
         setUserProfile(response.data);
       } else {
-        console.error('获取用户资料失败：', response?.message || '未知错误');
-        setProfileError(response?.message || '获取用户资料失败');
+        console.error('Failed to obtain user information：', response?.message || '未知错误');
+        setProfileError(response?.message || 'Failed to obtain user information');
         
         // 如果用户不存在，给出特殊提示
-        if (response?.message === '未找到用户' || response?.status === 404) {
+        if (response?.message === 'User not found' || response?.status === 404) {
           // 可以考虑显示"用户不存在"页面或重定向
-          console.log('用户不存在，可能需要重定向');
+          console.log('User does not exist, redirection may be required');
         }
       }
     } catch (err) {
-      console.error('获取用户资料出错：', err);
-      setProfileError('获取用户资料出错');
+      console.error('Error in getting user information: ', err);
+      setProfileError('Error in getting user information');
     } finally {
       setProfileLoading(false);
     }
@@ -304,18 +304,18 @@ function UserHome() {
   // 获取特定用户的创作小说
   const fetchSpecificUserNovels = async (targetUserId) => {
     try {
-      console.log('开始获取目标用户创作小说 - 用户ID:', targetUserId);
+      console.log('Start acquiring target user creation novels - User ID:', targetUserId);
       setNovelsLoading(true);
       setNovelsError(null);
       
       // 调用获取指定用户小说的API
       const response = await novelAPI.getNovelsByAuthor(targetUserId);
-      console.log('获取用户创作小说API响应:', response);
+      console.log('Get the API response for user-created novels:', response);
       
       if (response && response.success) {
         // 处理获取到的小说数据
         const novelsData = response.data || [];
-        console.log('获取到的小说原始数据:', novelsData);
+        console.log('The original data of the novel obtained:', novelsData);
         
         if (Array.isArray(novelsData) && novelsData.length > 0) {
           // 处理小说数据，与fetchAuthoredNovels类似
@@ -340,7 +340,7 @@ function UserHome() {
             };
           });
           
-          console.log('处理后的小说数据:', processedNovels);
+          console.log('Processed novel data:', processedNovels);
           setAuthoredNovels(processedNovels);
           setHasNoNovels(false);
           
@@ -349,24 +349,24 @@ function UserHome() {
             if (novel._id) {
               fetchNovelChapters(novel._id);
             } else {
-              console.error('小说缺少_id字段:', novel);
+              console.error('The novel is missing the _id field:', novel);
             }
           });
         } else {
-          console.log('目标用户没有创作小说或返回的数据不是数组:', novelsData);
+          console.log('The target user has not created any novels or the returned data is not an array:', novelsData);
           setAuthoredNovels([]);
           setHasNoNovels(true);
         }
       } else {
-        console.error('获取用户创作小说失败或响应格式不正确:', response);
-        setNovelsError('获取创作小说失败');
+        console.error('Failed to obtain user-created novels or the response format is incorrect:', response);
+        setNovelsError('Failed to obtain the creative novel');
         setAuthoredNovels([]);
         setHasNoNovels(true);
       }
     } catch (err) {
-      console.error('获取用户创作小说出错:', err);
-      console.error('错误详情:', err.message, err.stack);
-      setNovelsError('获取用户创作小说出错');
+      console.error('Error in getting user-created novels:', err);
+      console.error('Error details:', err.message, err.stack);
+      setNovelsError('Error in obtaining user-created novels');
       setAuthoredNovels([]);
       setHasNoNovels(true);
     } finally {
@@ -386,12 +386,12 @@ function UserHome() {
       if (response.success) {
         setUserProfile(response.data);
       } else {
-        console.error('获取用户资料失败：', response.message);
-        setProfileError('获取用户资料失败');
+        console.error('Failed to obtain user information：', response.message);
+        setProfileError('Failed to obtain user information');
       }
     } catch (err) {
-      console.error('获取用户资料出错：', err);
-      setProfileError('获取用户资料出错');
+      console.error('Error in getting user information: ', err);
+      setProfileError('Error in getting user information');
     } finally {
       setProfileLoading(false);
     }
