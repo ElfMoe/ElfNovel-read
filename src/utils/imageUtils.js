@@ -9,7 +9,7 @@ export const getFullImageUrl = (url, defaultImage = '/images/default-cover.jpg',
   console.log('getFullImageUrl 输入URL:', url);
   
   // 获取API基础URL
-  const baseUrl = process.env.REACT_APP_API_URL?.replace('/api', '') || 'https://novel-reading-website-backend.onrender.com';
+  const baseUrl = process.env.REACT_APP_API_URL?.replace('/api', '') || 'https://elfnovel-read-website-backend.onrender.com';
   
   // 检测是否为iOS设备
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
