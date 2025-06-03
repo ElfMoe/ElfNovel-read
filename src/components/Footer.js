@@ -27,7 +27,7 @@ function Footer() {
                 fontSize: '0.9rem'
               }}
             >
-              首页
+              Home
             </Link>
             <Link 
               to="/about"
@@ -38,7 +38,7 @@ function Footer() {
                 fontSize: '0.9rem'
               }}
             >
-              关于
+              about
             </Link>
             <a 
               href="https://github.com"
@@ -65,7 +65,7 @@ function Footer() {
               fontSize: '0.9rem'
             }}
           >
-            © 2024 小说阅读
+            © 2024  Elf Novel Reading
           </p>
         </div>
       </div>
