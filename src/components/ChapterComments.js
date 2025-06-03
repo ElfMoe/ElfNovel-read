@@ -78,20 +78,20 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
       const response = await commentAPI.getChapterComments(chapterId, page);
       
       if (response.success) {
-        console.log('获取到的章节评论数据:', response.data.comments);
+        console.log('The chapter comment data obtained:', response.data.comments);
         // 检查每条评论是否有replies字段
         response.data.comments.forEach(comment => {
-          console.log(`章节评论ID: ${comment._id}，回复数量:`, comment.replies ? comment.replies.length : 0);
+          console.log(`Chapter Comment ID: ${comment._id}，Number of replies:`, comment.replies ? comment.replies.length : 0);
         });
         
         setComments(response.data.comments);
         setTotalComments(response.data.pagination.total);
       } else {
-        setError(response.message || '获取留言失败');
+        setError(response.message || 'Failed to retrieve message');
       }
     } catch (err) {
-      console.error('获取章节留言失败:', err);
-      setError(err.message || '获取留言失败，请稍后再试');
+      console.error('Failed to get chapter message:', err);
+      setError(err.message || 'Failed to retrieve message, please try again later');
     } finally {
       setLoading(false);
     }
@@ -100,9 +100,9 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
   // 初始加载留言
   useEffect(() => {
     if (chapterId) {
-      console.log('加载章节评论，章节ID:', chapterId);
-      console.log('当前用户状态:', user);
-      console.log('当前认证状态:', isAuthenticated);
+      console.log('Load chapter comments, chapter ID:', chapterId);
+      console.log('Current user status:', user);
+      console.log('Current certification status:', isAuthenticated);
       fetchComments();
     }
   }, [chapterId, refreshFlag, isAuthenticated]);
@@ -112,12 +112,12 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
     e.preventDefault();
     
     if (!isAuthenticated) {
-      setError('请先登录后再发表留言');
+      setError('Please log in before posting a message');
       return;
     }
     
     if (!newComment.trim()) {
-      setError('留言内容不能为空');
+      setError('The message content cannot be empty');
       return;
     }
     
@@ -133,7 +133,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
       
       if (response.success) {
         setNewComment('');
-        setSuccess('留言发布成功！');
+        setSuccess('Message posted successfully！');
         
         // 刷新留言列表
         fetchComments();
@@ -143,11 +143,11 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
           setSuccess(null);
         }, 3000);
       } else {
-        setError(response.message || '发布留言失败');
+        setError(response.message || 'Failed to post message');
       }
     } catch (err) {
-      console.error('发布留言失败:', err);
-      setError(err.message || '发布留言失败，请稍后再试');
+      console.error('Failed to post message:', err);
+      setError(err.message || 'Failed to post message, please try again later');
     } finally {
       setSubmitting(false);
     }
@@ -156,7 +156,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
   // 点赞留言
   const handleLikeComment = async (commentId) => {
     if (!isAuthenticated) {
-      setError('请先登录后再点赞');
+      setError('Please log in before liking');
       return;
     }
     
@@ -172,8 +172,8 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
         ));
       }
     } catch (err) {
-      console.error('点赞失败:', err);
-      setError(err.message || '点赞失败，请稍后再试');
+      console.error('Like failed:', err);
+      setError(err.message || 'Like failed, please try again later');
     }
   };
   
@@ -199,7 +199,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
         ));
       }
     } catch (err) {
-      console.error('取消点赞失败:', err);
+      console.error('Failed to cancel like:', err);
     }
   };
   
@@ -302,7 +302,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
         const backgroundColor = generateColorFromUsername(user.username);
         return generateTextAvatar(user.username, backgroundColor);
       } catch (err) {
-        console.error('生成文本头像失败:', err);
+        console.error('Failed to generate text avatar:', err);
       }
     }
     
@@ -315,12 +315,12 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
     e.preventDefault();
     
     if (!isAuthenticated) {
-      setError('请先登录后再回复留言');
+      setError('Please log in before replying to the message');
       return;
     }
     
     if (!replyContent.trim()) {
-      setError('回复内容不能为空');
+      setError(' Errorr.. faça login antes de responder');
       return;
     }
     
@@ -341,14 +341,14 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
         replyData.replyToUserId = replyToUserId;
       }
       
-      console.log('发送回复数据:', replyData);
+      console.log('Send reply data:', replyData);
       
       const response = await commentAPI.replyToComment(replyData);
       
       if (response.success) {
         setReplyContent('');
         setReplyingTo(null);
-        setSuccess('回复发布成功！');
+        setSuccess('Reply posted successfully！');
         
         // 刷新留言列表
         await fetchComments();
@@ -364,11 +364,11 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
           setSuccess(null);
         }, 3000);
       } else {
-        setError(response.message || '回复发布失败');
+        setError(response.message || 'Reply post failed');
       }
     } catch (err) {
-      console.error('回复留言失败:', err);
-      setError(err.message || '回复发布失败，请稍后再试');
+      console.error('Failed to reply to message:', err);
+      setError(err.message || 'Reply post failed, please try again later');
     } finally {
       setReplySubmitting(false);
     }
@@ -376,7 +376,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
   
   // 添加渲染回复表单的函数
   const renderReplyForm = (comment) => {
-    console.log('渲染回复表单', {
+    console.log('Rendering the response form', {
       replyingTo: replyingTo?._id,
       commentId: comment._id,
       shouldShow: replyingTo?._id === comment._id
@@ -403,10 +403,10 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
             className="ms-auto btn-close" 
             style={{ fontSize: '0.7rem' }}
             onClick={() => {
-              console.log('关闭回复表单');
+              console.log('Close reply form');
               setReplyingTo(null);
             }}
-            aria-label="关闭"
+            aria-label="closer"
           ></button>
         </div>
         
@@ -419,7 +419,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
               }}
               value={replyContent}
               onChange={(e) => setReplyContent(e.target.value)}
-              placeholder="写下你的回复..."
+              placeholder="Write your reply..."
               disabled={!isAuthenticated || replySubmitting}
             />
           </div>
@@ -439,7 +439,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
               }}
               disabled={!isAuthenticated || replySubmitting}
             >
-              {replySubmitting ? '提交中...' : '发布回复'}
+              {replySubmitting ? 'Submitting...' : 'Post a reply'}
             </button>
           </div>
         </form>
@@ -485,7 +485,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
           onClick={() => toggleReplies(comment._id)}
         >
           <i className={`bi ${isExpanded ? 'bi-chevron-down' : 'bi-chevron-right'} me-1`}></i>
-          {isExpanded ? '收起回复' : `查看全部 ${replyCount} 条回复`}
+          {isExpanded ? 'Close reply' : `View All ${replyCount} Replys`}
         </div>
         
         {/* 回复列表 */}
@@ -503,7 +503,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
             <div className="d-flex align-items-start gap-2">
               <img
                 src={getUserAvatar(reply.user)}
-                alt={reply.user?.username || '用户'}
+                alt={reply.user?.username || 'user'}
                 style={{
                   width: '36px',
                   height: '36px',
@@ -512,7 +512,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
                   border: `1px solid ${theme.border}`
                 }}
                 onError={(e) => {
-                  console.log('头像加载失败，使用默认头像');
+                  console.log('Avatar loading failed, using default avatar');
                   e.target.src = '/images/avatars/default-avatar.jpg';
                 }}
               />
@@ -583,9 +583,9 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
                       transition: 'all 0.2s'
                     }}
                     onClick={() => {
-                      console.log('点击回复按钮 (回复)', reply._id);
+                      console.log('Click the reply button (Reply)', reply._id);
                       if (!isAuthenticated) {
-                        setError('请先登录后再回复留言');
+                        setError('Please log in before replying to the message');
                         return;
                       }
                       
@@ -606,7 +606,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
                     disabled={!isAuthenticated}
                   >
                     <i className="bi bi-reply"></i>
-                    <span className="ms-1">回复{replyingTo?._id === reply._id ? '中' : ''}</span>
+                    <span className="ms-1">reply{replyingTo?._id === reply._id ? 'middle' : ''}</span>
                   </button>
                   
                   {/* 添加删除回复按钮 */}
@@ -624,7 +624,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
                       onClick={() => handleDeleteReply(reply._id, comment._id)}
                     >
                       <i className="bi bi-trash"></i>
-                      <span className="ms-1">删除</span>
+                      <span className="ms-1">delete</span>
                     </button>
                   )}
                 </div>
@@ -666,10 +666,10 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
                         className="ms-auto btn-close" 
                         style={{ fontSize: '0.7rem' }}
                         onClick={() => {
-                          console.log('关闭回复表单');
+                          console.log('Close reply form');
                           setReplyingTo(null);
                         }}
-                        aria-label="关闭"
+                        aria-label="cancel"
                       ></button>
                     </div>
                     
@@ -682,7 +682,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
                           }}
                           value={replyContent}
                           onChange={(e) => setReplyContent(e.target.value)}
-                          placeholder="写下你的回复..."
+                          placeholder="Write your reply..."
                           disabled={!isAuthenticated || replySubmitting}
                         />
                       </div>
@@ -702,7 +702,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
                           }}
                           disabled={!isAuthenticated || replySubmitting}
                         >
-                          {replySubmitting ? '提交中...' : '发布回复'}
+                          {replySubmitting ? 'Submitting...' : 'Post a reply'}
                         </button>
                       </div>
                     </form>
@@ -726,7 +726,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
       // 没有权限，直接显示错误消息
       setLocalErrors({
         ...localErrors,
-        [commentId]: '您没有权限删除此留言'
+        [commentId]: 'You do not have permission to delete this message'
       });
       
       // 3秒后自动清除错误消息
@@ -760,18 +760,18 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
         setComments(comments.filter(comment => comment._id !== commentToDelete));
         // 更新评论总数
         setTotalComments(prevTotal => Math.max(0, prevTotal - 1));
-        setSuccess('留言已成功删除');
+        setSuccess('Message successfully deleted');
         
         // 3秒后清除成功消息
         setTimeout(() => {
           setSuccess(null);
         }, 3000);
       } else {
-        setError(response.message || '删除留言失败');
+        setError(response.message || 'Failed to delete message');
       }
     } catch (err) {
-      console.error('删除留言失败:', err);
-      setError(err.message || '删除留言失败，请稍后再试');
+      console.error('Failed to delete message:', err);
+      setError(err.message || 'Failed to delete message, please try again later');
     } finally {
       // 重置状态
       setCommentToDelete(null);
@@ -792,7 +792,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
       // 没有权限，直接显示错误消息
       setLocalErrors({
         ...localErrors,
-        [replyId]: '您没有权限删除此回复'
+        [replyId]: 'You do not have permission to delete this reply'
       });
       
       // 3秒后自动清除错误消息
@@ -835,18 +835,18 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
         // 更新评论总数
         setTotalComments(prevTotal => Math.max(0, prevTotal - 1));
         
-        setSuccess('回复已成功删除');
+        setSuccess('Reply successfully deleted');
         
         // 3秒后清除成功消息
         setTimeout(() => {
           setSuccess(null);
         }, 3000);
       } else {
-        setError(response.message || '删除回复失败');
+        setError(response.message || 'Failed to delete reply');
       }
     } catch (err) {
-      console.error('删除回复失败:', err);
-      setError(err.message || '删除回复失败，请稍后再试');
+      console.error('Failed to delete reply:', err);
+      setError(err.message || 'Failed to delete reply, please try again later');
     } finally {
       // 重置状态
       setCommentToDelete(null);
@@ -857,14 +857,14 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
   
   // 检查用户是否可以删除评论
   const canDeleteComment = (comment) => {
-    console.log('======= 评论删除权限检查开始 =======');
-    console.log('用户对象:', user);
-    console.log('认证状态:', isAuthenticated);
-    console.log('评论对象:', comment);
-    console.log('小说作者ID:', novelAuthorId);
+    console.log('======= Comment deletion permission check started =======');
+    console.log('User Object:', user);
+    console.log('Certification Status:', isAuthenticated);
+    console.log('Comments:', comment);
+    console.log('Novel author ID:', novelAuthorId);
     
     if (!user || !isAuthenticated) {
-      console.log('用户未登录，不能删除评论');
+      console.log('The user is not logged in, and cannot delete comments');
       return false;
     }
     
@@ -875,24 +875,24 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
     
     // 用户可以删除自己的评论
     const isCommentAuthor = commentUserId === currentUserId;
-    console.log('权限检查 - 是否是评论作者:', isCommentAuthor, 
-                '评论用户ID:', commentUserId, 
-                '当前用户ID:', currentUserId);
+    console.log('Permission check - Is it the comment author:', isCommentAuthor, 
+                'Comment User ID:', commentUserId, 
+                'Current User ID:', currentUserId);
     
     // 管理员可以删除任何评论
     const isAdmin = user.role === 'admin';
-    console.log('权限检查 - 是否是管理员:', isAdmin, '用户角色:', user.role);
+    console.log('Permission check - Is it an administrator:', isAdmin, 'User roles:', user.role);
     
     // 检查是否为小说作者（需要从父组件传入novelAuthorId）
     const novelAuthorIdStr = novelAuthorId ? String(novelAuthorId) : '';
     const isNovelAuthor = novelAuthorIdStr && currentUserId === novelAuthorIdStr;
-    console.log('权限检查 - 是否是小说作者:', isNovelAuthor, 
-                '小说作者ID:', novelAuthorIdStr);
+    console.log('Permission check - Is this the novel author:', isNovelAuthor, 
+                'Novel author ID:', novelAuthorIdStr);
     
     // 根据实际权限返回结果
     const canDelete = isCommentAuthor || isAdmin || isNovelAuthor;
-    console.log('最终删除权限:', canDelete);
-    console.log('======= 评论删除权限检查结束 =======');
+    console.log('Final deletion rights:', canDelete);
+    console.log('======= Comment deletion permission check completed =======');
     
     return canDelete;
   };
@@ -900,7 +900,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
   return (
     <div className="chapter-comments mt-5">
       <h4 style={{ color: theme.text, marginBottom: '1.5rem' }}>
-        章节留言 <small className="text-muted">({totalComments})</small>
+        Chapter Message <small className="text-muted">({totalComments})</small>
       </h4>
       
       {/* 自定义删除确认对话框 */}
@@ -931,12 +931,12 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
             }}
           >
             <h5 style={{ color: theme.text, marginBottom: '1rem' }}>
-              确认删除
+              Confirm Delete
             </h5>
             <p style={{ color: theme.text, marginBottom: '1.5rem' }}>
               {deleteType === 'comment' 
-                ? '您确定要删除这条留言吗？删除后将无法恢复。' 
-                : '您确定要删除这条回复吗？删除后将无法恢复。'}
+                ? 'Are you sure you want to delete this message? Once deleted, it cannot be recovered.' 
+                : 'Are you sure you want to delete this reply? Once deleted, it cannot be restored.'}
             </p>
             <div className="d-flex justify-content-end gap-2">
               <button
@@ -955,7 +955,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
                   setDeleteType('');
                 }}
               >
-                取消
+                Cancel
               </button>
               <button
                 style={{
@@ -975,7 +975,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
                   }
                 }}
               >
-                确认删除
+                Confirm Delete
               </button>
             </div>
           </div>
@@ -994,12 +994,12 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
         className="comment-form"
       >
         <h5 style={{ color: theme.text, marginBottom: '1rem' }}>
-          发表留言
+          Leave a comment
         </h5>
         
         {!isAuthenticated && (
           <div className="alert alert-warning">
-            请先登录后再发表留言
+            Please log in before posting a message
           </div>
         )}
         
@@ -1023,8 +1023,8 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
               onChange={(e) => setNewComment(e.target.value)}
               placeholder={
                 isAuthenticated 
-                  ? `说点什么吧，关于《${novelTitle}》第${chapterNumber}章：${chapterTitle}` 
-                  : "请先登录后再发表留言"
+                  ? `Say something about《${novelTitle}》No.${chapterNumber}chapter：${chapterTitle}` 
+                  : "Please log in before posting a message"
               }
               disabled={!isAuthenticated || submitting}
             />
@@ -1040,7 +1040,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
               }}
               disabled={!isAuthenticated || submitting}
             >
-              {submitting ? '提交中...' : '发表留言'}
+              {submitting ? 'Submitting...' : 'Leave a comment'}
             </button>
           </div>
         </form>
@@ -1050,9 +1050,9 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
       {loading ? (
         <div className="text-center my-5">
           <div className="spinner-border" role="status" style={{ color: theme.accent }}>
-            <span className="visually-hidden">加载中...</span>
+            <span className="visually-hidden">loading...</span>
           </div>
-          <p style={{ color: theme.text, marginTop: '1rem' }}>正在加载留言...</p>
+          <p style={{ color: theme.text, marginTop: '1rem' }}>Loading messages...</p>
         </div>
       ) : comments.length > 0 ? (
         <div className="comments-list">
@@ -1061,7 +1061,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
               <div className="d-flex align-items-start gap-3">
                 <img
                   src={getUserAvatar(comment.user)}
-                  alt={comment.user?.username || '用户'}
+                  alt={comment.user?.username || 'user'}
                   style={{
                     width: '48px',
                     height: '48px',
@@ -1070,7 +1070,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
                     border: `1px solid ${theme.border}`
                   }}
                   onError={(e) => {
-                    console.log('头像加载失败，使用默认头像');
+                    console.log('Avatar loading failed, using default avatar');
                     e.target.src = '/images/avatars/default-avatar.jpg';
                   }}
                 />
@@ -1126,9 +1126,9 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
                         transition: 'all 0.2s'
                       }}
                       onClick={() => {
-                        console.log('点击回复按钮', comment._id);
+                        console.log('Click the reply button', comment._id);
                         if (!isAuthenticated) {
-                          setError('请先登录后再回复留言');
+                          setError('Please log in before replying to the message');
                           return;
                         }
                         // 如果当前已经选中了这条评论，取消选中
@@ -1145,7 +1145,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
                       disabled={!isAuthenticated}
                     >
                       <i className="bi bi-reply"></i>
-                      <span className="ms-1">回复{replyingTo?._id === comment._id ? '中' : ''}</span>
+                      <span className="ms-1">回复{replyingTo?._id === comment._id ? 'middle' : ''}</span>
                     </button>
                     
                     {/* 添加删除按钮 */}
@@ -1163,7 +1163,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
                         onClick={() => handleDeleteComment(comment._id)}
                       >
                         <i className="bi bi-trash"></i>
-                        <span className="ms-1">删除</span>
+                        <span className="ms-1">delete</span>
                       </button>
                     )}
                   </div>
@@ -1206,7 +1206,7 @@ const ChapterComments = ({ novelId, chapterId, novelTitle, chapterNumber, chapte
           borderRadius: '8px',
           border: `1px solid ${theme.border}`
         }}>
-          还没有人留言，成为第一个留言的人吧！
+          No one has left a comment yet, be the first to leave a comment!
         </div>
       )}
     </div>
