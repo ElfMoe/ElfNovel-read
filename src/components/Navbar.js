@@ -98,19 +98,19 @@ function Navbar() {
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center gap-3">
             <Link to="/" style={{ color: theme.text, textDecoration: 'none' }}>
-              <h1 className="h4 mb-0 link-hover">小熊阅读</h1>
+              <h1 className="h4 mb-0 link-hover">Elf Novel Read</h1>
             </Link>
             
             {/* 桌面导航 - 在大屏幕上显示 */}
             <div className="d-none d-md-flex align-items-center">
               <Link to="/" className="link-hover" style={{ color: theme.textSecondary, textDecoration: 'none', marginRight: '30px' }}>
-                首页
+                Home
               </Link>
               <Link to="/novels" className="link-hover" style={{ color: theme.textSecondary, textDecoration: 'none', marginRight: '30px' }}>
-                小说库
+                Novel Library
               </Link>
               <Link to="/search" className="link-hover" style={{ color: theme.textSecondary, textDecoration: 'none', marginRight: '30px' }}>
-                搜索
+                Search
               </Link>
               {user && (
                 <>
@@ -129,7 +129,7 @@ function Navbar() {
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
                     >
-                      读者中心
+                      Reader Center
                       <i className="bi bi-chevron-down ms-1" style={{ fontSize: '0.75rem', transition: 'transform 0.2s' }}></i>
                     </button>
                     <ul className="dropdown-menu" style={dropdownStyle}>
@@ -140,7 +140,7 @@ function Navbar() {
                           style={{ color: theme.text }}
                         >
                           <i className="bi bi-bookmark-heart me-2"></i>
-                          我的书架
+                          My Bookshelf
                         </Link>
                       </li>
                       <li>
@@ -150,7 +150,7 @@ function Navbar() {
                           style={{ color: theme.text }}
                         >
                           <i className="bi bi-clock-history me-2"></i>
-                          阅读历史
+                          Reading History
                         </Link>
                       </li>
                     </ul>
@@ -171,7 +171,7 @@ function Navbar() {
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
                     >
-                      作者中心
+                      Author Center
                       <i className="bi bi-chevron-down ms-1" style={{ fontSize: '0.75rem', transition: 'transform 0.2s' }}></i>
                     </button>
                     <ul className="dropdown-menu" style={dropdownStyle}>
@@ -182,7 +182,7 @@ function Navbar() {
                           style={{ color: theme.text }}
                         >
                           <i className="bi bi-speedometer2 me-2"></i>
-                          作者仪表盘
+                          Author Dashboard
                         </Link>
                       </li>
                       <li>
@@ -192,7 +192,7 @@ function Navbar() {
                           style={{ color: theme.text }}
                         >
                           <i className="bi bi-journal-text me-2"></i>
-                          我的作品
+                          My Works
                         </Link>
                       </li>
                       <li>
@@ -202,7 +202,7 @@ function Navbar() {
                           style={{ color: theme.text }}
                         >
                           <i className="bi bi-plus-circle me-2"></i>
-                          创建新小说
+                          Create a new novel
                         </Link>
                       </li>
                     </ul>
@@ -237,7 +237,7 @@ function Navbar() {
                         style={{ color: theme.text }}
                       >
                         <i className="bi bi-person me-2"></i>
-                        个人中心
+                        Personal Center
                       </Link>
                     </li>
                     <li>
@@ -247,7 +247,7 @@ function Navbar() {
                         style={{ color: theme.text }}
                       >
                         <i className="bi bi-person-vcard me-2"></i>
-                        个人主页
+                        Personal Homepage
                       </Link>
                     </li>
                     <li>
@@ -257,7 +257,7 @@ function Navbar() {
                         style={{ color: theme.text }}
                       >
                         <i className="bi bi-bookmark-heart me-2"></i>
-                        我的收藏
+                        My Collection
                       </Link>
                     </li>
                     <li>
@@ -267,7 +267,7 @@ function Navbar() {
                         style={{ color: theme.text }}
                       >
                         <i className="bi bi-clock-history me-2"></i>
-                        阅读历史
+                        Reading History
                       </Link>
                     </li>
                     <li><hr style={{ borderColor: theme.border }} /></li>
@@ -278,7 +278,7 @@ function Navbar() {
                         style={{ color: theme.accent }}
                       >
                         <i className="bi bi-box-arrow-right me-2"></i>
-                        退出登录
+                        Log out
                       </button>
                     </li>
                   </ul>
@@ -295,7 +295,7 @@ function Navbar() {
                     }}
                     className="button-hover"
                   >
-                    登录
+                    Log in
                   </Link>
                   <Link 
                     to="/register" 
@@ -308,7 +308,7 @@ function Navbar() {
                     }}
                     className="button-hover"
                   >
-                    注册
+                    Sign Up
                   </Link>
                 </div>
               )}
@@ -356,13 +356,13 @@ function Navbar() {
       <div style={mobileMenuStyle} className="d-md-none">
         <div className="container">
           <Link to="/" className="d-block py-2 px-3" style={{ color: theme.text, textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
-            <i className="bi bi-house-door me-2"></i>首页
+            <i className="bi bi-house-door me-2"></i>Home
           </Link>
           <Link to="/novels" className="d-block py-2 px-3" style={{ color: theme.text, textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
-            <i className="bi bi-book me-2"></i>小说库
+            <i className="bi bi-book me-2"></i>Novel Library
           </Link>
           <Link to="/search" className="d-block py-2 px-3" style={{ color: theme.text, textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
-            <i className="bi bi-search me-2"></i>搜索
+            <i className="bi bi-search me-2"></i>search
           </Link>
           
           {user && (
@@ -370,40 +370,40 @@ function Navbar() {
               <div className="mt-2 mb-2 px-3">
                 <p className="mb-1" style={{ color: theme.textSecondary, fontWeight: 'bold' }}>读者中心</p>
                 <Link to="/reader/favorites" className="d-block py-2 ps-4" style={{ color: theme.text, textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
-                  <i className="bi bi-bookmark-heart me-2"></i>我的书架
+                  <i className="bi bi-bookmark-heart me-2"></i>My Bookshelf
                 </Link>
                 <Link to="/reader/history" className="d-block py-2 ps-4" style={{ color: theme.text, textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
-                  <i className="bi bi-clock-history me-2"></i>阅读历史
+                  <i className="bi bi-clock-history me-2"></i>Reading History
                 </Link>
               </div>
               
               <div className="mb-2 px-3">
                 <p className="mb-1" style={{ color: theme.textSecondary, fontWeight: 'bold' }}>作者中心</p>
                 <Link to="/author/dashboard" className="d-block py-2 ps-4" style={{ color: theme.text, textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
-                  <i className="bi bi-speedometer2 me-2"></i>作者仪表盘
+                  <i className="bi bi-speedometer2 me-2"></i>Author Dashboard
                 </Link>
                 <Link to="/author/novels" className="d-block py-2 ps-4" style={{ color: theme.text, textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
-                  <i className="bi bi-journal-text me-2"></i>我的作品
+                  <i className="bi bi-journal-text me-2"></i>My Works
                 </Link>
                 <Link to="/author/novels/create" className="d-block py-2 ps-4" style={{ color: theme.text, textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
-                  <i className="bi bi-plus-circle me-2"></i>创建新小说
+                  <i className="bi bi-plus-circle me-2"></i>Create a new novel
                 </Link>
               </div>
               
               <div className="mb-2 px-3">
               <p className="mb-1" style={{ color: theme.textSecondary, fontWeight: 'bold' }}>个人</p>
                 <Link to="/profile" className="d-block py-2 ps-4" style={{ color: theme.text, textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
-                  <i className="bi bi-person me-2"></i>个人中心
+                  <i className="bi bi-person me-2"></i>Personal Center
                 </Link>
                 <Link to="/user-home" className="d-block py-2 ps-4" style={{ color: theme.text, textDecoration: 'none' }} onClick={() => setMenuOpen(false)}>
-                  <i className="bi bi-person-vcard me-2"></i>个人主页
+                  <i className="bi bi-person-vcard me-2"></i>Personal Homepage
                 </Link>
                 <button 
                   className="d-block w-100 text-start py-2 ps-4 border-0 bg-transparent"
                   onClick={() => {logout(); setMenuOpen(false);}}
                   style={{ color: theme.accent }}
                 >
-                  <i className="bi bi-box-arrow-right me-2"></i>退出登录
+                  <i className="bi bi-box-arrow-right me-2"></i>Log out
                 </button>
               </div>
             </>
@@ -422,7 +422,7 @@ function Navbar() {
                 className="flex-grow-1 text-center"
                 onClick={() => setMenuOpen(false)}
               >
-                登录
+                Log in
               </Link>
               <Link 
                 to="/register" 
@@ -436,7 +436,7 @@ function Navbar() {
                 className="flex-grow-1 text-center"
                 onClick={() => setMenuOpen(false)}
               >
-                注册
+                Sign Up
               </Link>
             </div>
           )}
@@ -452,9 +452,9 @@ function Navbar() {
               className="btn-theme button-hover"
             >
               {isDark ? (
-                <><i className="bi bi-sun me-2"></i> 切换到亮色模式</>
+                <><i className="bi bi-sun me-2"></i> Switch to light mode</>
               ) : (
-                <><i className="bi bi-moon-stars me-2"></i> 切换到暗色模式</>
+                <><i className="bi bi-moon-stars me-2"></i> Switch to dark mode</>
               )}
             </button>
           </div>
